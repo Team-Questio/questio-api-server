@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.service.util.dto;
+package team_questio.questio.gpt.service.util.dto;
 
 import java.util.List;
 

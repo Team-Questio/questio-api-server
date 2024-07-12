@@ -1,12 +1,12 @@
-package team_questio.questio.portfolio.service;
+package team_questio.questio.gpt.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import team_questio.questio.portfolio.service.util.GPTUtil;
-import team_questio.questio.portfolio.service.util.dto.response.GPTResponse;
+import team_questio.questio.gpt.service.util.GPTUtil;
+import team_questio.questio.gpt.service.util.dto.response.GPTResponse;
 
 @Service
 @Slf4j
@@ -14,7 +14,7 @@ import team_questio.questio.portfolio.service.util.dto.response.GPTResponse;
 public class GPTService {
     private final GPTUtil gptUtil;
 
-    public void generateQuestion(String portfolio) {
+    public Long generateQuestion(String portfolio) {
         var template = new RestTemplate();
         var request = gptUtil.createHttpEntity(portfolio);
 
@@ -24,6 +24,6 @@ public class GPTService {
         } catch (Exception e) {
             log.error("Error in generating question: " + e.getMessage());
         }
-
+        return null;
     }
 }

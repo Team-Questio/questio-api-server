@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.service.util;
+package team_questio.questio.gpt.service.util;
 
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import team_questio.questio.portfolio.service.util.dto.GPTRequest;
+import team_questio.questio.gpt.service.util.dto.GPTRequest;
 
 @Component
 public class GPTUtil {
