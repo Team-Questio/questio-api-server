@@ -4,7 +4,4 @@ public record GPTMessage(
         String role,
         String content
 ) {
-    public GPTMessage(String content) {
-        this("user", content);
-    }
 }

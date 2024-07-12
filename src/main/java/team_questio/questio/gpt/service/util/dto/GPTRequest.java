@@ -6,7 +6,7 @@ public record GPTRequest(
         String model,
         List<GPTMessage> messages
 ) {
-    public GPTRequest(String model, String content) {
-        this(model, List.of(new GPTMessage(content)));
+    public GPTRequest(String model, String systemMessage, String content) {
+        this(model, List.of(new GPTMessage("system", systemMessage), new GPTMessage("user", content)));
     }
 }

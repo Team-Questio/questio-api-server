@@ -19,6 +19,8 @@ public class GPTUtil {
     private String url;
     @Value("${openai.model}")
     private String model;
+    @Value("${openai.systemMessage}")
+    private String systemMessage;
 
     public HttpEntity<GPTRequest> createHttpEntity(String content) {
         return new HttpEntity<>(createGPTRequest(content), getHttpHeaders());
@@ -32,7 +34,7 @@ public class GPTUtil {
     }
 
     private GPTRequest createGPTRequest(String content) {
-        return new GPTRequest(model, content);
+        return new GPTRequest(model, systemMessage, content);
     }
 
 }
