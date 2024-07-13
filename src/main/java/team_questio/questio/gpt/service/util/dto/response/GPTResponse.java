@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.service.util.dto.response;
+package team_questio.questio.gpt.service.util.dto.response;
 
 import java.util.List;
 
