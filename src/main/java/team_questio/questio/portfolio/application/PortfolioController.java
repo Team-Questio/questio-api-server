@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.presentation;
+package team_questio.questio.portfolio.application;
 
 import java.net.URI;
 import lombok.RequiredArgsConstructor;
@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
+import team_questio.questio.portfolio.application.dto.PortfolioRequest;
 import team_questio.questio.portfolio.service.facade.PortfolioFacade;
 
 @Slf4j
