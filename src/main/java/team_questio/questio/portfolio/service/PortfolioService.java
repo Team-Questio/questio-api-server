@@ -2,7 +2,9 @@ package team_questio.questio.portfolio.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import team_questio.questio.portfolio.persistence.PortfolioRepository;
+import team_questio.questio.portfolio.service.dto.PortfolioDetailInfo;
 import team_questio.questio.portfolio.service.dto.PortfolioParam;
 
 @Service
@@ -15,5 +17,13 @@ public class PortfolioService {
         portfolio = portfolioRepository.save(portfolio);
 
         return portfolio.getId();
+    }
+
+    @Transactional(readOnly = true)
+    public PortfolioDetailInfo getPortfolio(Long portfolioId) {
+        var portfolio = portfolioRepository.findById(portfolioId)
+                .orElseThrow(() -> new IllegalArgumentException("Portfolio not found"));
+
+        return PortfolioDetailInfo.from(portfolio);
     }
 }
