@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.presentation.dto;
+package team_questio.questio.portfolio.application.dto;
 
 import team_questio.questio.portfolio.service.dto.PortfolioParam;
 
