@@ -6,6 +6,7 @@ import team_questio.questio.gpt.service.GPTService;
 import team_questio.questio.gpt.service.dto.GptParam;
 import team_questio.questio.portfolio.service.PortfolioService;
 import team_questio.questio.portfolio.service.QuestService;
+import team_questio.questio.portfolio.service.dto.PortfolioInfo;
 import team_questio.questio.portfolio.service.dto.PortfolioParam;
 
 @Facade
@@ -25,5 +26,12 @@ public class PortfolioFacade {
 
         questService.createQuests(questCreateCommands);
         return portfolioId;
+    }
+
+    public PortfolioInfo getPortfolio(Long portfolioId) {
+        var portfolioDetail = portfolioService.getPortfolio(portfolioId);
+        var questInfos = questService.getQuests(portfolioId);
+
+        return PortfolioInfo.from(portfolioDetail, questInfos);
     }
 }
