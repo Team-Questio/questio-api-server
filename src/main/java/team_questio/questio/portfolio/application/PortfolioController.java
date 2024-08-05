@@ -12,18 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team_questio.questio.portfolio.application.dto.PortfolioRequest;
 import team_questio.questio.portfolio.application.dto.PortfolioResponse;
-import team_questio.questio.portfolio.service.facade.PortfolioFacade;
+import team_questio.questio.portfolio.service.PortfolioFacadeService;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/portfolio")
 @RequiredArgsConstructor
 public class PortfolioController {
-    private final PortfolioFacade portfolioFacade;
+    private final PortfolioFacadeService portfolioFacadeService;
 
     @PostMapping()
     public ResponseEntity<Void> createPortfolio(@RequestBody PortfolioRequest request) {
-        var portfolioId = portfolioFacade.createPortfolio(request.toPortfolioParam());
+        var portfolioId = portfolioFacadeService.createPortfolio(request.toPortfolioParam());
 
         return ResponseEntity.created(URI.create("/api/v1/portfolio/" + portfolioId))
                 .build();
@@ -31,7 +31,7 @@ public class PortfolioController {
 
     @GetMapping("/{portfolioId}")
     public ResponseEntity<PortfolioResponse> getPortfolio(@PathVariable Long portfolioId) {
-        var portfolioInfo = portfolioFacade.getPortfolio(portfolioId);
+        var portfolioInfo = portfolioFacadeService.getPortfolio(portfolioId);
 
         var response = PortfolioResponse.from(portfolioInfo);
         return ResponseEntity.ok()

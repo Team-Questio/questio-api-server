@@ -1,17 +1,15 @@
-package team_questio.questio.portfolio.service.facade;
+package team_questio.questio.portfolio.service;
 
 import lombok.RequiredArgsConstructor;
 import team_questio.questio.common.annotation.Facade;
 import team_questio.questio.gpt.service.GPTService;
 import team_questio.questio.gpt.service.dto.GptParam;
-import team_questio.questio.portfolio.service.PortfolioService;
-import team_questio.questio.portfolio.service.QuestService;
 import team_questio.questio.portfolio.service.dto.PortfolioInfo;
 import team_questio.questio.portfolio.service.dto.PortfolioParam;
 
 @Facade
 @RequiredArgsConstructor
-public class PortfolioFacade {
+public class PortfolioFacadeService {
     private final PortfolioService portfolioService;
     private final GPTService gptService;
     private final QuestService questService;
