@@ -1,7 +1,7 @@
-package team_questio.questio.portfolio.application.dto;
+package team_questio.questio.portfolio.presentation.dto;
 
 import java.util.List;
-import team_questio.questio.portfolio.service.dto.PortfolioInfo;
+import team_questio.questio.portfolio.application.dto.PortfolioInfo;
 
 public record PortfolioResponse(
         PortfolioDetailResponse portfolio,

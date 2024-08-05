@@ -1,11 +1,11 @@
-package team_questio.questio.portfolio.service;
+package team_questio.questio.portfolio.application;
 
 import lombok.RequiredArgsConstructor;
 import team_questio.questio.common.annotation.Facade;
 import team_questio.questio.gpt.service.GPTService;
 import team_questio.questio.gpt.service.dto.GptParam;
-import team_questio.questio.portfolio.service.dto.PortfolioInfo;
-import team_questio.questio.portfolio.service.dto.PortfolioParam;
+import team_questio.questio.portfolio.application.dto.PortfolioInfo;
+import team_questio.questio.portfolio.application.dto.PortfolioParam;
 
 @Facade
 @RequiredArgsConstructor

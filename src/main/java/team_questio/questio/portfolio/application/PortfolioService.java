@@ -1,11 +1,11 @@
-package team_questio.questio.portfolio.service;
+package team_questio.questio.portfolio.application;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import team_questio.questio.portfolio.persistence.PortfolioRepository;
-import team_questio.questio.portfolio.service.dto.PortfolioDetailInfo;
-import team_questio.questio.portfolio.service.dto.PortfolioParam;
+import team_questio.questio.portfolio.application.dto.PortfolioDetailInfo;
+import team_questio.questio.portfolio.application.dto.PortfolioParam;
 
 @Service
 @RequiredArgsConstructor

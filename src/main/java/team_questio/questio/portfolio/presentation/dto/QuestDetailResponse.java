@@ -1,6 +1,6 @@
-package team_questio.questio.portfolio.application.dto;
+package team_questio.questio.portfolio.presentation.dto;
 
-import team_questio.questio.portfolio.service.dto.QuestDetailInfo;
+import team_questio.questio.portfolio.application.dto.QuestDetailInfo;
 
 public record QuestDetailResponse(
         Long questId,

@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.service.command;
+package team_questio.questio.portfolio.application.command;
 
 import team_questio.questio.portfolio.domain.Quest;
 

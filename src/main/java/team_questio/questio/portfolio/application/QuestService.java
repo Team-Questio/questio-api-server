@@ -1,11 +1,11 @@
-package team_questio.questio.portfolio.service;
+package team_questio.questio.portfolio.application;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_questio.questio.portfolio.persistence.QuestRepository;
-import team_questio.questio.portfolio.service.command.QuestCreateCommand;
-import team_questio.questio.portfolio.service.dto.QuestDetailInfo;
+import team_questio.questio.portfolio.application.command.QuestCreateCommand;
+import team_questio.questio.portfolio.application.dto.QuestDetailInfo;
 
 @Service
 @RequiredArgsConstructor
