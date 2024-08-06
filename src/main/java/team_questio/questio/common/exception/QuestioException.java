@@ -6,9 +6,13 @@ import team_questio.questio.common.exception.code.ErrorCode;
 public class QuestioException extends RuntimeException {
     private final ErrorCode errorCode;
 
-    public QuestioException(ErrorCode errorCode) {
+    private QuestioException(ErrorCode errorCode) {
         super(errorCode.message());
         this.errorCode = errorCode;
+    }
+
+    public static QuestioException of(ErrorCode errorCode) {
+        return new QuestioException(errorCode);
     }
 
     public HttpStatus httpStatus() {
