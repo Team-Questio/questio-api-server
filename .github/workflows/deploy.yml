@@ -23,11 +23,11 @@ jobs:
 
       - name: Create application.yml
         env:
-          APPLICATION_YML: ${{ secrets.APPLICATION_YML }}
+          APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
         run: |
           mkdir -p ./src/main/resources
-          touch ./src/main/resources/application.yml
-          echo "$APPLICATION_YML" > src/main/resources/application.yml
+          touch ./src/main/resources/application.properties
+          echo "$APPLICATION_PROPERTIES" > src/main/resources/application.properties
 
       - name: Execute Gradle build
         run: ./gradlew build
