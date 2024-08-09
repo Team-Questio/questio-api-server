@@ -25,8 +25,8 @@ class JWTTokenProviderTest {
         final String username = "user1";
 
         //when
-        String token1 = jwtTokenProvider.generateAccessToken(id, username);
-        String token2 = jwtTokenProvider.generateAccessToken(id, username);
+        String token1 = jwtTokenProvider.generateAccessToken(id, username, null);
+        String token2 = jwtTokenProvider.generateAccessToken(id, username, null);
 
         //then
         Assertions.assertThat(token1).isNotEqualTo(token2);
