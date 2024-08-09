@@ -13,7 +13,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
-import team_questio.questio.security.util.MailCertificationUtil;
+import team_questio.questio.security.util.CertificationUtil;
 
 @Service
 @RequiredArgsConstructor
@@ -27,7 +27,7 @@ public class AuthenticationService {
 
     @Transactional
     public void sendEmail(String email) {
-        var code = MailCertificationUtil.generateCertificationNumber();
+        var code = CertificationUtil.generateCertificationNumber();
         var htmlContent = createHtmlContent(code);
         MimeMessage message = mailSender.createMimeMessage();
 
