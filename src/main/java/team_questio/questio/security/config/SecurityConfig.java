@@ -7,8 +7,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.filter.CorsFilter;
 import team_questio.questio.security.filter.JWTAuthenticationFilter;
+import team_questio.questio.security.filter.JWTAuthorizationFilter;
 
 @Configuration
 @RequiredArgsConstructor
@@ -19,7 +21,8 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(
             HttpSecurity http,
             CorsFilter corsFilter,
-            JWTAuthenticationFilter jwtAuthenticationFilter
+            JWTAuthenticationFilter jwtAuthenticationFilter,
+            JWTAuthorizationFilter jwtAuthorizationFilter
     ) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
@@ -33,8 +36,8 @@ public class SecurityConfig {
         );
 
         http.addFilter(corsFilter);
-        http.addFilter(jwtAuthenticationFilter);
-
+        http.addFilterBefore(jwtAuthenticationFilter, JWTAuthorizationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter, AuthorizationFilter.class);
         return http.build();
     }
 
