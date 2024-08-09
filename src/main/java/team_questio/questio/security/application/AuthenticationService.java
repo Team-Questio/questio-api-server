@@ -52,7 +52,7 @@ public class AuthenticationService {
 
         deleteSecretCode(email);
         if (!code.equals(savedCode)) {
-            throw QuestioException.of(AuthError.INVALID_CERTIFICATION_CODE);
+            throw QuestioException.of(AuthError.CERTIFICATION_INVALID_CODE);
         }
         saveSuccessCertificationInfo(email);
     }
