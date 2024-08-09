@@ -2,10 +2,12 @@ package team_questio.questio.user.domain;
 
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import team_questio.questio.common.persistence.BaseEntity;
 
 @Entity
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
     private String username;
@@ -20,17 +22,5 @@ public class User extends BaseEntity {
 
     public static User of(String username, String password, Role role) {
         return new User(username, password, role);
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
     }
 }
