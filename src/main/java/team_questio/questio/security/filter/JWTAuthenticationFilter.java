@@ -13,6 +13,7 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.security.application.PrincipleDetails;
@@ -32,9 +33,18 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException {
         PrincipleDetails userDetails = (PrincipleDetails) authResult.getPrincipal();
-        var accessToken = jwtTokenProvider.generateAccessToken(userDetails.getId(), userDetails.getUsername());
+        var userId = userDetails.getId();
+        var username = userDetails.getUsername();
+        var roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
+
+        var accessToken = jwtTokenProvider.generateAccessToken(userId, username, roles);
         var refreshToken = jwtTokenProvider.generateRefreshToken(userDetails.getId(), userDetails.getUsername());
 
+        setResponse(response, accessToken, refreshToken);
+    }
+
+    private void setResponse(HttpServletResponse response, String accessToken, String refreshToken)
+            throws IOException {
         Map<String, String> tokenResponse = new HashMap<>();
         tokenResponse.put("accessToken", accessToken);
         tokenResponse.put("refreshToken", refreshToken);
