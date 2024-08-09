@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team_questio.questio.common.exception.QuestioException;
-import team_questio.questio.common.exception.code.UserError;
+import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.user.persistence.UserRepository;
 
 @Slf4j
@@ -19,7 +19,7 @@ public class PrincipleDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> QuestioException.of(UserError.USER_NOT_FOUND));
+                .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
 
         return PrincipleDetails.of(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
     }
