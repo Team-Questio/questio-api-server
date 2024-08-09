@@ -6,7 +6,8 @@ public enum AuthError implements ErrorCode {
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "A001", "일치하는 유저를 찾을 수 없습니다."),
     MAIL_SEND_FAILED(HttpStatus.INTERNAL_SERVER_ERROR, "A002", "인증번호 전송에 실패했습니다."),
     CERTIFICATION_CODE_EXPIRED(HttpStatus.BAD_REQUEST, "A003", "인증번호가 만료되었습니다."),
-    INVALID_CERTIFICATION_CODE(HttpStatus.BAD_REQUEST, "A004", "인증번호가 일치하지 않습니다.");
+    INVALID_CERTIFICATION_CODE(HttpStatus.BAD_REQUEST, "A004", "인증번호가 일치하지 않습니다."),
+    CERTIFICATION_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "A005", "인증번호를 확인하는 중 오류가 발생했습니다.");
 
 
     private final HttpStatus httpStatus;
