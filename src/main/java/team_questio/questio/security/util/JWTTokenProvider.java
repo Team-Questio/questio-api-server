@@ -19,6 +19,7 @@ public class JWTTokenProvider {
     public String generateAccessToken(Long id, String username, List<String> roles) {
         return Jwts.builder()
                 .setClaims(Map.of("id", id, "username", username, "roles", roles))
+                .setSubject(username)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.accessTokenExpireIn()))
@@ -28,8 +29,8 @@ public class JWTTokenProvider {
 
     public String generateRefreshToken(Long id, String username) {
         return Jwts.builder()
-                .setSubject(username)
                 .setClaims(Map.of("id", id, "username", username))
+                .setSubject(username)
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.refreshTokenExpireIn()))
