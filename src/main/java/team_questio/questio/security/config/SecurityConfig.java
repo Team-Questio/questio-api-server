@@ -13,12 +13,13 @@ import team_questio.questio.security.filter.JWTAuthenticationFilter;
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
-    private final CorsFilter corsFilter;
-    private final JWTAuthenticationFilter jwtAuthenticationFilter;
+    private final SecurityProperties securityProperties;
 
     @Bean
     public SecurityFilterChain filterChain(
-            HttpSecurity http
+            HttpSecurity http,
+            CorsFilter corsFilter,
+            JWTAuthenticationFilter jwtAuthenticationFilter
     ) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable);
         http.httpBasic(AbstractHttpConfigurer::disable);
@@ -26,9 +27,8 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(authorizeRequests ->
                 authorizeRequests
-                        .requestMatchers("/api/v1/auth/**").permitAll()
-                        .requestMatchers("/swagger-ui/**").permitAll()
-                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers(securityProperties.authBaseUrl()).permitAll()
+                        .requestMatchers(securityProperties.swaggerBaseUrl()).permitAll()
                         .anyRequest().authenticated()
         );
 
