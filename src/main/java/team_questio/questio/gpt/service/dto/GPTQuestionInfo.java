@@ -1,6 +1,6 @@
 package team_questio.questio.gpt.service.dto;
 
-import team_questio.questio.portfolio.service.command.QuestCreateCommand;
+import team_questio.questio.portfolio.application.command.QuestCreateCommand;
 
 public record GPTQuestionInfo(
         String question,
