@@ -4,6 +4,7 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
+import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class AuthenticationService {
             helper.setSubject("Questio 인증번호");
             helper.setText(htmlContent, true);
             mailSender.send(message);
-        } catch (MessagingException e) {
+        } catch (MessagingException | MailException e1) {
             throw QuestioException.of(AuthError.MAIL_SEND_FAILED);
         }
 
