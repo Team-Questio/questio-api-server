@@ -21,6 +21,6 @@ public class PrincipleDetailService implements UserDetailsService {
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> QuestioException.of(UserError.USER_NOT_FOUND));
 
-        return PrincipleDetails.of(user.getUsername(), user.getPassword(), user.getRole());
+        return PrincipleDetails.of(user.getId(), user.getUsername(), user.getPassword(), user.getRole());
     }
 }

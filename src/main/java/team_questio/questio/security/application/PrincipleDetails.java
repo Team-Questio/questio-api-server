@@ -2,23 +2,27 @@ package team_questio.questio.security.application;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import team_questio.questio.user.domain.Role;
 
 public class PrincipleDetails implements UserDetails {
+    @Getter
+    private final Long id;
     private final String username;
     private final String password;
     private final Role role;
 
-    private PrincipleDetails(String username, String password, Role role) {
+    private PrincipleDetails(Long id, String username, String password, Role role) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.role = role;
     }
 
-    public static PrincipleDetails of(String username, String password, Role role) {
-        return new PrincipleDetails(username, password, role);
+    public static PrincipleDetails of(Long id, String username, String password, Role role) {
+        return new PrincipleDetails(id, username, password, role);
     }
 
     @Override
