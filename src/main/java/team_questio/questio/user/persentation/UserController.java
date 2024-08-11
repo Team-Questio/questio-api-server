@@ -13,7 +13,7 @@ import team_questio.questio.user.persentation.dto.SignUpRequest;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
-public class UserController {
+public class UserController implements UserApiController {
     private final UserService userService;
 
     @PostMapping

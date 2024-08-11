@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import team_questio.questio.portfolio.application.PortfolioFacadeService;
 import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioResponse;
-import team_questio.questio.portfolio.application.PortfolioFacadeService;
 
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/portfolio")
 @RequiredArgsConstructor
-public class PortfolioController {
+public class PortfolioController implements PortfolioApiController {
     private final PortfolioFacadeService portfolioFacadeService;
 
     @PostMapping()
