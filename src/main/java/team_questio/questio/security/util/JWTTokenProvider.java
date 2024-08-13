@@ -39,27 +39,35 @@ public class JWTTokenProvider {
                 .compact();
     }
 
-
-    public Map<String, Object> getClaims(String token) {
-        return getClaimFromAccessToken(token, claims -> claims);
+    public Map<String, Object> getAccessClaims(String token) {
+        return getClaim(token, claims -> claims, JWTProperties::accessTokenSecretKey);
     }
 
-    public boolean isInvalidToken(String token) {
-        return Objects.isNull(getSubjectFromToken(token)) || isTokenExpired(token);
+    public boolean isInvalidAccessToken(String token) {
+        return Objects.isNull(getSubjectFromToken(token, JWTProperties::accessTokenSecretKey))
+                || isTokenExpired(token, JWTProperties::accessTokenSecretKey);
     }
 
-    public String getSubjectFromToken(String token) {
-        return getClaimFromAccessToken(token, Claims::getSubject);
+    public boolean isInvalidRefreshToken(String token) {
+        return Objects.isNull(getSubjectFromToken(token, JWTProperties::refreshTokenSecretKey))
+                || isTokenExpired(token, JWTProperties::refreshTokenSecretKey);
     }
 
-    private boolean isTokenExpired(String token) {
-        return getClaimFromAccessToken(token, Claims::getExpiration)
+    public String getSubjectFromToken(String token, Function<JWTProperties, String> secretResolver) {
+        return getClaim(token, Claims::getSubject, secretResolver);
+    }
+
+    private boolean isTokenExpired(String token, Function<JWTProperties, String> secretResolver) {
+        return getClaim(token, Claims::getExpiration, secretResolver)
                 .before(now());
     }
 
-    private <T> T getClaimFromAccessToken(String token, Function<Claims, T> claimsResolver) {
+    private <T> T getClaim(String token,
+                           Function<Claims, T> claimsResolver,
+                           Function<JWTProperties, String> secretResolver
+    ) {
         final Claims claims = Jwts.parser()
-                .setSigningKey(jwtProperties.accessTokenSecretKey())
+                .setSigningKey(secretResolver.apply(jwtProperties))
                 .parseClaimsJws(token)
                 .getBody();
         return claimsResolver.apply(claims);

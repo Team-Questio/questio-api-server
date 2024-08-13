@@ -52,14 +52,14 @@ public class JWTAuthorizationFilter extends AbstractPreAuthenticatedProcessingFi
             return;
         }
 
-        var authentication = getUsernamePasswordAuthenticationToken(token);
+        var authentication = getUsernamePasswordAuthenticationToken(token.substring(7));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
         chain.doFilter(request, response);
     }
 
     private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(String token) {
-        var claims = jwtTokenProvider.getClaims(token.substring(7));
+        var claims = jwtTokenProvider.getAccessClaims(token);
         var roles = (List<String>) claims.get("roles");
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
@@ -69,7 +69,7 @@ public class JWTAuthorizationFilter extends AbstractPreAuthenticatedProcessingFi
     }
 
     private boolean isInvalidToken(String token) {
-        return isInvalidTokenForm(token) || jwtTokenProvider.isInvalidToken(token.substring(7));
+        return isInvalidTokenForm(token) || jwtTokenProvider.isInvalidAccessToken(token.substring(7));
     }
 
     private boolean isInvalidTokenForm(String token) {
