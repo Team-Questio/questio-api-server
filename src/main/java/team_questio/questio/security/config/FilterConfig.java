@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import team_questio.questio.security.application.JWTTokenService;
 import team_questio.questio.security.filter.JWTAuthenticationFilter;
 import team_questio.questio.security.filter.JWTAuthorizationFilter;
 import team_questio.questio.security.util.JWTTokenProvider;
@@ -17,9 +18,9 @@ public class FilterConfig {
     @Bean
     public JWTAuthenticationFilter jwtAuthenticationFilter(
             AuthenticationManager authenticationManager,
-            JWTTokenProvider jwtTokenProvider
+            JWTTokenService jwtTokenService
     ) {
-        var filter = new JWTAuthenticationFilter(authenticationManager, jwtTokenProvider);
+        var filter = new JWTAuthenticationFilter(authenticationManager, jwtTokenService);
         filter.setFilterProcessesUrl(securityProperties.loginUrl());
 
         return filter;

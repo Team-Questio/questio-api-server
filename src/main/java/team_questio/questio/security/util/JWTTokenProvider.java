@@ -22,7 +22,7 @@ public class JWTTokenProvider {
                 .setSubject((String) claims.get("username"))
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(now())
-                .setExpiration(expiration(JWTProperties::accessTokenExpireIn))
+                .setExpiration(expirationWith(JWTProperties::accessTokenExpireIn))
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.accessTokenSecretKey())
                 .compact();
     }
@@ -34,7 +34,7 @@ public class JWTTokenProvider {
                 .setSubject((String) claims.get("username"))
                 .setId(UUID.randomUUID().toString())
                 .setIssuedAt(now())
-                .setExpiration(expiration(JWTProperties::refreshTokenExpireIn))
+                .setExpiration(expirationWith(JWTProperties::refreshTokenExpireIn))
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.refreshTokenSecretKey())
                 .compact();
     }
@@ -69,7 +69,7 @@ public class JWTTokenProvider {
         return new Date(System.currentTimeMillis());
     }
 
-    private Date expiration(Function<JWTProperties, Long> expiration) {
+    private Date expirationWith(Function<JWTProperties, Long> expiration) {
         return new Date(System.currentTimeMillis() + expiration.apply(jwtProperties));
     }
 }

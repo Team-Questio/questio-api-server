@@ -13,32 +13,28 @@ import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import team_questio.questio.common.exception.code.AuthError;
+import team_questio.questio.security.application.JWTTokenService;
 import team_questio.questio.security.application.PrincipleDetails;
-import team_questio.questio.security.util.JWTTokenProvider;
 
 @Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-    private final JWTTokenProvider jwtTokenProvider;
+    private final JWTTokenService jwtTokenService;
     private static final String DEFAULT_ERROR_CODE = "errorCode";
 
-    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTTokenProvider jwtTokenProvider) {
+    public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTTokenService jwtTokenService) {
         super(authenticationManager);
-        this.jwtTokenProvider = jwtTokenProvider;
+        this.jwtTokenService = jwtTokenService;
     }
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication authResult) throws IOException {
         PrincipleDetails userDetails = (PrincipleDetails) authResult.getPrincipal();
-        var userId = userDetails.getId();
-        var username = userDetails.getUsername();
-        var roles = userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList();
 
-        var accessToken = jwtTokenProvider.generateAccessToken(userId, username, roles);
-        var refreshToken = jwtTokenProvider.generateRefreshToken(userDetails.getId(), userDetails.getUsername());
+        var accessToken = jwtTokenService.generateAccessToken(userDetails);
+        var refreshToken = jwtTokenService.generateRefreshToken(userDetails);
 
         setResponse(response, accessToken, refreshToken);
     }
