@@ -16,7 +16,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.security.application.JWTTokenService;
-import team_questio.questio.security.application.PrincipleDetails;
+import team_questio.questio.security.application.dto.PrincipleDetails;
 
 @Slf4j
 public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilter {

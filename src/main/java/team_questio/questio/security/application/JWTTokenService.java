@@ -4,7 +4,11 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team_questio.questio.common.exception.QuestioException;
+import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
+import team_questio.questio.security.application.dto.PrincipleDetails;
+import team_questio.questio.security.application.dto.TokenDetails;
 import team_questio.questio.security.util.JWTTokenProvider;
 
 @Service
@@ -24,6 +28,18 @@ public final class JWTTokenService {
         return this.getRefreshToken(claims);
     }
 
+    public TokenDetails reissueAccessToken(String refreshToken) {
+        if (isInvalidateRefreshToken(refreshToken)) {
+            throw QuestioException.of(AuthError.INVALID_REFRESH_TOKEN);
+        }
+
+        var claims = jwtTokenProvider.getRefreshClaims(refreshToken);
+        var newAccessToken = jwtTokenProvider.generateAccessToken(claims);
+        var newRefreshToken = this.getRefreshToken(claims);
+
+        return TokenDetails.of(newAccessToken, newRefreshToken);
+    }
+
     private String getRefreshToken(Map<String, Object> claims) {
         var username = (String) claims.get("username");
         var refreshToken = jwtTokenProvider.generateRefreshToken(claims);
@@ -31,6 +47,19 @@ public final class JWTTokenService {
         var expired = jwtTokenProvider.getRefreshTokenExpireIn();
         redisUtil.setData(key, refreshToken, expired, TimeUnit.MILLISECONDS);
 
-        return jwtTokenProvider.generateRefreshToken(claims);
+        return refreshToken;
+    }
+
+    private boolean isInvalidateRefreshToken(String refreshToken) {
+        return jwtTokenProvider.isInvalidRefreshToken(refreshToken) || isOldRefreshToken(refreshToken);
+    }
+
+    private boolean isOldRefreshToken(String refreshToken) {
+        var name = (String) jwtTokenProvider.getRefreshClaims(refreshToken).get("username");
+        var key = redisUtil.getRefreshTokenPrefix(name);
+        var currentRefreshToken = redisUtil.getData(key, String.class)
+                .orElseThrow(() -> QuestioException.of(AuthError.INVALID_REFRESH_TOKEN));
+
+        return !currentRefreshToken.equals(refreshToken);
     }
 }

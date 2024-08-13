@@ -43,6 +43,10 @@ public class JWTTokenProvider {
         return getClaim(token, claims -> claims, JWTProperties::accessTokenSecretKey);
     }
 
+    public Map<String, Object> getRefreshClaims(String refreshToken) {
+        return getClaim(refreshToken, claims -> claims, JWTProperties::refreshTokenSecretKey);
+    }
+
     public boolean isInvalidAccessToken(String token) {
         return Objects.isNull(getSubjectFromToken(token, JWTProperties::accessTokenSecretKey))
                 || isTokenExpired(token, JWTProperties::accessTokenSecretKey);

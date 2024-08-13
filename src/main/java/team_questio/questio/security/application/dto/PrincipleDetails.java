@@ -1,4 +1,4 @@
-package team_questio.questio.security.application;
+package team_questio.questio.security.application.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;

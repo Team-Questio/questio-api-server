@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
+import team_questio.questio.security.application.dto.PrincipleDetails;
 import team_questio.questio.user.persistence.UserRepository;
 
 @Slf4j
