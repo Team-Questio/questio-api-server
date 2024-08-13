@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 public class RedisUtil {
     public static final String EMAIL_CERTIFICATION_PREFIX = "email_certification:";
     public static final String EMAIL_CERTIFICATION_SUCCESS_PREFIX = "email_certification:success:";
+    public static final String REFRESH_TOKEN_PREFIX = "refresh_token:";
 
     private final RedisTemplate<String, String> redisTemplate;
 
@@ -48,10 +49,14 @@ public class RedisUtil {
     }
 
     public String getEmailCertificationKey(String email) {
-        return EMAIL_CERTIFICATION_PREFIX + email;
+        return EMAIL_CERTIFICATION_PREFIX.concat(email);
     }
 
     public String getEmailCertificationSuccessKey(String email) {
-        return EMAIL_CERTIFICATION_SUCCESS_PREFIX + email;
+        return EMAIL_CERTIFICATION_SUCCESS_PREFIX.concat(email);
+    }
+
+    public String getRefreshTokenPrefix(String email) {
+        return REFRESH_TOKEN_PREFIX.concat(email);
     }
 }

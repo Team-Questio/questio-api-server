@@ -72,4 +72,8 @@ public class JWTTokenProvider {
     private Date expirationWith(Function<JWTProperties, Long> expiration) {
         return new Date(System.currentTimeMillis() + expiration.apply(jwtProperties));
     }
+
+    public long getRefreshTokenExpireIn() {
+        return jwtProperties.refreshTokenExpireIn();
+    }
 }
