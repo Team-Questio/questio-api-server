@@ -4,8 +4,8 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
 import lombok.RequiredArgsConstructor;
@@ -16,34 +16,36 @@ import org.springframework.stereotype.Component;
 public class JWTTokenProvider {
     private final JWTProperties jwtProperties;
 
-    public String generateAccessToken(Long id, String username, List<String> roles) {
+    public String generateAccessToken(Map<String, Object> claims) {
         return Jwts.builder()
-                .setClaims(Map.of("id", id, "username", username, "roles", roles))
-                .setSubject(username)
+                .setClaims(claims)
+                .setSubject((String) claims.get("username"))
                 .setId(UUID.randomUUID().toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.accessTokenExpireIn()))
+                .setIssuedAt(now())
+                .setExpiration(expiration(JWTProperties::accessTokenExpireIn))
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.accessTokenSecretKey())
                 .compact();
     }
 
-    public String generateRefreshToken(Long id, String username) {
+    public String generateRefreshToken(Map<String, Object> claims) {
+
         return Jwts.builder()
-                .setClaims(Map.of("id", id, "username", username))
-                .setSubject(username)
+                .setClaims(claims)
+                .setSubject((String) claims.get("username"))
                 .setId(UUID.randomUUID().toString())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + jwtProperties.refreshTokenExpireIn()))
+                .setIssuedAt(now())
+                .setExpiration(expiration(JWTProperties::refreshTokenExpireIn))
                 .signWith(SignatureAlgorithm.HS512, jwtProperties.refreshTokenSecretKey())
                 .compact();
     }
+
 
     public Map<String, Object> getClaims(String token) {
         return getClaimFromAccessToken(token, claims -> claims);
     }
 
     public boolean isInvalidToken(String token) {
-        return getSubjectFromToken(token) == null || isTokenExpired(token);
+        return Objects.isNull(getSubjectFromToken(token)) || isTokenExpired(token);
     }
 
     public String getSubjectFromToken(String token) {
@@ -51,7 +53,8 @@ public class JWTTokenProvider {
     }
 
     private boolean isTokenExpired(String token) {
-        return getClaimFromAccessToken(token, Claims::getExpiration).before(new Date());
+        return getClaimFromAccessToken(token, Claims::getExpiration)
+                .before(now());
     }
 
     private <T> T getClaimFromAccessToken(String token, Function<Claims, T> claimsResolver) {
@@ -60,5 +63,13 @@ public class JWTTokenProvider {
                 .parseClaimsJws(token)
                 .getBody();
         return claimsResolver.apply(claims);
+    }
+
+    private Date now() {
+        return new Date(System.currentTimeMillis());
+    }
+
+    private Date expiration(Function<JWTProperties, Long> expiration) {
+        return new Date(System.currentTimeMillis() + expiration.apply(jwtProperties));
     }
 }

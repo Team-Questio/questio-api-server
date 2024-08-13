@@ -1,5 +1,6 @@
 package team_questio.questio.security.util;
 
+import java.util.Map;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,12 +22,11 @@ class JWTTokenProviderTest {
     @Test
     void noDuplicatedTokenTest() {
         //given
-        final Long id = 1L;
-        final String username = "user1";
+        Map<String, Object> claims = Map.of("id", 1L, "username", "test", "role", "USER");
 
         //when
-        String token1 = jwtTokenProvider.generateAccessToken(id, username, null);
-        String token2 = jwtTokenProvider.generateAccessToken(id, username, null);
+        String token1 = jwtTokenProvider.generateAccessToken(claims);
+        String token2 = jwtTokenProvider.generateAccessToken(claims);
 
         //then
         Assertions.assertThat(token1).isNotEqualTo(token2);

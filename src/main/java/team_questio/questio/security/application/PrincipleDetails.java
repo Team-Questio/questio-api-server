@@ -2,6 +2,7 @@ package team_questio.questio.security.application;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,5 +41,9 @@ public class PrincipleDetails implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public Map<String, Object> getClaims() {
+        return Map.of("id", id, "username", username, "role", role.getRole());
     }
 }
