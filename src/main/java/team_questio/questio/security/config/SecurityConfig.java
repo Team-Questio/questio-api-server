@@ -14,6 +14,7 @@ import team_questio.questio.security.filter.AuthenticationResultHandler;
 import team_questio.questio.security.filter.AuthorizationFailureHandler;
 import team_questio.questio.security.filter.JWTAuthenticationFilter;
 import team_questio.questio.security.filter.JWTAuthorizationFilter;
+import team_questio.questio.security.filter.QuestioAuthenticationEntryPointHandler;
 
 @Configuration
 @RequiredArgsConstructor
@@ -25,6 +26,7 @@ public class SecurityConfig {
             HttpSecurity http,
             AuthenticationResultHandler authenticationResultHandler,
             AuthorizationFailureHandler authorizationFailureHandler,
+            QuestioAuthenticationEntryPointHandler questioAuthenticationEntryPointHandler,
             CorsFilter corsFilter,
             JWTAuthorizationFilter jwtAuthorizationFilter,
             PrincipleDetailService principleDetailService
@@ -40,6 +42,7 @@ public class SecurityConfig {
 
         http.exceptionHandling(exceptionHandling -> exceptionHandling
                 .accessDeniedHandler(authorizationFailureHandler)
+                .authenticationEntryPoint(questioAuthenticationEntryPointHandler)
         );
 
         http.formLogin(formLogin -> formLogin
