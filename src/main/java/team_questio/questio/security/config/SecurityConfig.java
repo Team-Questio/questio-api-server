@@ -8,11 +8,11 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.AuthorizationFilter;
 import org.springframework.web.filter.CorsFilter;
 import team_questio.questio.security.application.PrincipleDetailService;
 import team_questio.questio.security.filter.AuthenticationResultHandler;
 import team_questio.questio.security.filter.AuthorizationFailureHandler;
-import team_questio.questio.security.filter.JWTAuthenticationFilter;
 import team_questio.questio.security.filter.JWTAuthorizationFilter;
 import team_questio.questio.security.filter.QuestioAuthenticationEntryPointHandler;
 
@@ -66,7 +66,7 @@ public class SecurityConfig {
         );
 
         http.addFilter(corsFilter);
-        http.addFilterAfter(jwtAuthorizationFilter, JWTAuthenticationFilter.class);
+        http.addFilterAfter(jwtAuthorizationFilter, AuthorizationFilter.class);
 
         return http.build();
     }
