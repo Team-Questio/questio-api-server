@@ -21,13 +21,22 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v3
 
-      - name: Create application.yml
+      - name: Create resourse
         env:
           APPLICATION_PROPERTIES: ${{ secrets.APPLICATION_PROPERTIES }}
+          GOOGLE_OAUTH_INFO: ${{ secrets.GOOGLE_OAUTH_INFO }}
+          KAKAO_OAUTH_INFO: ${{ secrets.KAKAO_OAUTH_INFO }}
+          NAVER_OAUTH_INFO: ${{ secrets.NAVER_OAUTH_INFO }}
         run: |
           mkdir -p ./src/main/resources
           touch ./src/main/resources/application.properties
           echo "$APPLICATION_PROPERTIES" > src/main/resources/application.properties
+          touch ./src/main/resources/google-oauth-info.yaml
+          echo "$GOOGLE_OAUTH_INFO" > src/main/resources/google-oauth-info.yaml
+          touch ./src/main/resources/kakao-oauth-info.yaml
+          echo "$KAKAO_OAUTH_INFO" > src/main/resources/kakao-oauth-info.yaml
+          touch ./src/main/resources/naver-oauth-info.yaml
+          echo "$NAVER_OAUTH_INFO" > src/main/resources/naver-oauth-info.yaml
 
       - name: Execute Gradle build
         run: ./gradlew build -x test
