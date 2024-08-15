@@ -7,7 +7,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Objects;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
@@ -41,10 +40,10 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
 
     private UsernamePasswordAuthenticationToken getUsernamePasswordAuthenticationToken(String token) {
         var claims = jwtTokenProvider.getAccessClaims(token);
-        var roles = (List<String>) claims.get("roles");
+        var role = (String) claims.get("role");
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
-        roles.forEach(role -> authorities.add(() -> role));
+        authorities.add(() -> role);
 
         return new UsernamePasswordAuthenticationToken(claims.get("id"), null, authorities);
     }
