@@ -66,7 +66,7 @@ public class SecurityConfig {
         );
 
         http.addFilter(corsFilter);
-        http.addFilterAfter(jwtAuthorizationFilter, AuthorizationFilter.class);
+        http.addFilterBefore(jwtAuthorizationFilter, AuthorizationFilter.class);
 
         return http.build();
     }
