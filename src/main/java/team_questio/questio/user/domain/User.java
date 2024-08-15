@@ -14,17 +14,29 @@ import team_questio.questio.common.persistence.BaseEntity;
 public class User extends BaseEntity {
     private String username;
     private String password;
-    
-    @Enumerated(EnumType.STRING)
-    private Role role;
 
-    private User(String username, String password, Role role) {
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.USER;
+
+    @Enumerated(EnumType.STRING)
+    private AccountType userAccountType = AccountType.NORMAL;
+
+    private User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.role = role;
+    }
+
+    private User(String username, String password, AccountType userAccountType) {
+        this.username = username;
+        this.password = password;
+        this.userAccountType = userAccountType;
     }
 
     public static User of(String username, String password) {
-        return new User(username, password, Role.USER);
+        return new User(username, password);
+    }
+
+    public static User of(String username, String password, AccountType userAccountType) {
+        return new User(username, password, userAccountType);
     }
 }
