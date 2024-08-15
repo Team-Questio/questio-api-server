@@ -58,6 +58,12 @@ public class PrincipleDetailService extends DefaultOAuth2UserService implements 
         if (registration.equals(AccountType.KAKAO)) {
             return getKakaoEmail(user.getAttributes());
         }
+        if (registration.equals(AccountType.GOOGLE)) {
+            return getGoogleEmail(user.getAttributes());
+        }
+        if (registration.equals(AccountType.NAVER)) {
+            return getNaverEmail(user.getAttributes());
+        }
 
         throw new IllegalArgumentException("Unsupported registrationId: " + registration);
     }
@@ -65,6 +71,15 @@ public class PrincipleDetailService extends DefaultOAuth2UserService implements 
     private String getKakaoEmail(Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map) attributes.get("kakao_account");
         return (String) kakaoAccount.get("email");
+    }
+
+    public String getGoogleEmail(Map<String, Object> attributes) {
+        return (String) attributes.get("email");
+    }
+
+    public String getNaverEmail(Map<String, Object> attributes) {
+        Map<String, Object> response = (Map) attributes.get("response");
+        return (String) response.get("email");
     }
 
     private boolean isNotExistUser(String username, AccountType registration) {
