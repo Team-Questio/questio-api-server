@@ -6,8 +6,11 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import team_questio.questio.security.presentation.dto.EmailAuthRequest;
+import team_questio.questio.security.presentation.dto.TokenRefreshRequest;
+import team_questio.questio.security.presentation.dto.TokenRefreshResponse;
 
 @Tag(name = "인증 담당 API", description = "회원가입 시 필요한 인증을 담당합니다.")
 public interface AuthenticationApiController {
@@ -32,4 +35,8 @@ public interface AuthenticationApiController {
                      EmailAuthRequest emailAuthRequest,
                      @Parameter(description = "인증 코드입니다.", required = true)
                      String code);
+
+    @PostMapping
+    ResponseEntity<TokenRefreshResponse> refreshToken(@RequestBody(description = "리프레시 토큰입니다.", required = true)
+                                                      TokenRefreshRequest request);
 }

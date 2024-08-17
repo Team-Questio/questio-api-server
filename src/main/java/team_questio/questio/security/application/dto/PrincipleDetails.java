@@ -1,13 +1,15 @@
-package team_questio.questio.security.application;
+package team_questio.questio.security.application.dto;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import team_questio.questio.user.domain.Role;
 
-public class PrincipleDetails implements UserDetails {
+public class PrincipleDetails implements UserDetails, OAuth2User {
     @Getter
     private final Long id;
     private final String username;
@@ -31,6 +33,11 @@ public class PrincipleDetails implements UserDetails {
     }
 
     @Override
+    public Map<String, Object> getAttributes() {
+        return Map.of();
+    }
+
+    @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         Collection<GrantedAuthority> authorities = new ArrayList<>();
         authorities.add(role::getRole);
@@ -40,5 +47,14 @@ public class PrincipleDetails implements UserDetails {
     @Override
     public String getPassword() {
         return password;
+    }
+
+    public Map<String, Object> getClaims() {
+        return Map.of("id", id, "username", username, "role", role.getRole());
+    }
+
+    @Override
+    public String getName() {
+        return username;
     }
 }
