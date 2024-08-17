@@ -27,4 +27,10 @@ public class QuestService {
                 .toList();
         return response;
     }
+
+    public void updateFeedback(Long id, Integer feedback) {
+        var quest = questRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Quest not found"));
+        quest.updateFeedback(feedback);
+    }
 }

@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import team_questio.questio.portfolio.presentation.dto.FeedbackRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioResponse;
 
@@ -23,4 +24,10 @@ public interface PortfolioApiController {
             @ApiResponse(responseCode = "200", description = "포트폴리오 조회 성공")
     })
     ResponseEntity<PortfolioResponse> getPortfolio(Long portfolioId);
+
+    @Operation(summary = "평가를 전송합니다.", description = "평가를 전송합니다.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "평가 전송 성공")
+    })
+    ResponseEntity<Void> updateFeedback(Long questId, FeedbackRequest request);
 }

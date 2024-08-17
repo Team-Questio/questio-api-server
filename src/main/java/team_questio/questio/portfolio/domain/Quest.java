@@ -19,6 +19,7 @@ public class Quest {
 
     private String question;
     private String answer;
+    private Integer feedback;
 
     private Long portfolioId;
 
@@ -27,5 +28,9 @@ public class Quest {
         this.question = question;
         this.answer = answer;
         this.portfolioId = portfolioId;
+    }
+
+    public void updateFeedback(Integer feedback) {
+        this.feedback = feedback;
     }
 }
