@@ -1,6 +1,8 @@
 package team_questio.questio.portfolio.domain;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -19,7 +21,8 @@ public class Quest {
 
     private String question;
     private String answer;
-    private Integer feedback;
+    @Enumerated(EnumType.STRING)
+    private Feedback feedback;
 
     private Long portfolioId;
 
@@ -30,7 +33,7 @@ public class Quest {
         this.portfolioId = portfolioId;
     }
 
-    public void updateFeedback(Integer feedback) {
+    public void updateFeedback(Feedback feedback) {
         this.feedback = feedback;
     }
 }
