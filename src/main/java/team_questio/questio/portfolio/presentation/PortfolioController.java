@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,7 +41,7 @@ public class PortfolioController implements PortfolioApiController {
                 .body(response);
     }
 
-    @PutMapping("/quest/{questId}")
+    @PatchMapping("/quest/{questId}")
     public ResponseEntity<Void> updateFeedback(@PathVariable Long questId,
         @RequestBody FeedbackRequest request) {
 
