@@ -3,6 +3,9 @@ package team_questio.questio.portfolio.application;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import team_questio.questio.common.exception.QuestioException;
+import team_questio.questio.portfolio.domain.Feedback;
+import team_questio.questio.portfolio.exception.PortfolioError;
 import team_questio.questio.portfolio.persistence.QuestRepository;
 import team_questio.questio.portfolio.application.command.QuestCreateCommand;
 import team_questio.questio.portfolio.application.dto.QuestDetailInfo;
@@ -30,7 +33,7 @@ public class QuestService {
 
     public void updateFeedback(Long id, Integer feedback) {
         var quest = questRepository.findById(id)
-            .orElseThrow(() -> new IllegalArgumentException("Quest not found"));
-        quest.updateFeedback(feedback);
+            .orElseThrow(() -> QuestioException.of(PortfolioError.QUEST_NOT_FOUND));
+        quest.updateFeedback(Feedback.of(feedback));
     }
 }
