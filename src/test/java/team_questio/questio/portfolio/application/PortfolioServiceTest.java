@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import team_questio.questio.common.exception.QuestioException;
+import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.portfolio.application.dto.PortfolioDetailInfo;
 import team_questio.questio.portfolio.domain.Portfolio;
 import team_questio.questio.portfolio.persistence.PortfolioRepository;
@@ -33,7 +34,7 @@ class PortfolioServiceTest {
         //when && then
         Assertions.assertThatThrownBy(() -> portfolioService.getPortfolio(1L, wrongUser))
                 .isInstanceOf(QuestioException.class)
-                .hasMessage("포트폴리오에 접근할 수 없습니다.");
+                .hasMessage(PortfolioError.PORTFOLIO_NOT_OWN.message());
 
 
     }
