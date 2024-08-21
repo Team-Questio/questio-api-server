@@ -21,7 +21,7 @@ public class UserService {
     private final RedisUtil redisUtil;
 
     public void registerUser(SignUpCommand command) {
-        if (userRepository.existsByUsernameAndUserAccountType(command.username(), AccountType.NORMAL)) {
+        if (existUsername(command.username())) {
             throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
         }
 
@@ -29,6 +29,10 @@ public class UserService {
         var encodedPassword = passwordEncoder.encode(command.password());
         var user = User.of(command.username(), encodedPassword);
         userRepository.save(user);
+    }
+
+    private boolean existUsername(final String username) {
+        return userRepository.existsByUsernameAndUserAccountType(username, AccountType.NORMAL);
     }
 
     private void verifyEmailCertified(String username) {

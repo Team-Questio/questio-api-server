@@ -32,7 +32,7 @@ public class AuthenticationService {
 
     @Transactional
     public void sendEmail(String email) {
-        if (userRepository.existsByUsernameAndUserAccountType(email, AccountType.NORMAL)) {
+        if (existsUsername(email)) {
             throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
         }
 
@@ -51,6 +51,10 @@ public class AuthenticationService {
         }
 
         saveSecretCode(email, code);
+    }
+
+    private boolean existsUsername(String email) {
+        return userRepository.existsByUsernameAndUserAccountType(email, AccountType.NORMAL);
     }
 
     @Transactional
