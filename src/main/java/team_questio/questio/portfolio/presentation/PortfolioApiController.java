@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import team_questio.questio.portfolio.presentation.dto.FeedbackRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioResponse;
@@ -16,14 +17,14 @@ public interface PortfolioApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "포트폴리오 생성 성공")
     })
-    ResponseEntity<Void> createPortfolio(PortfolioRequest request);
+    ResponseEntity<Void> createPortfolio(PortfolioRequest request, Authentication authentication);
 
 
     @Operation(summary = "포트폴리오를 조회합니다.", description = "포트폴리오를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "포트폴리오 조회 성공")
     })
-    ResponseEntity<PortfolioResponse> getPortfolio(Long portfolioId);
+    ResponseEntity<PortfolioResponse> getPortfolio(Long portfolioId, Authentication authentication);
 
     @Operation(summary = "평가를 전송합니다.", description = "평가를 전송합니다.")
     @ApiResponses(value = {
