@@ -1,4 +1,4 @@
-package team_questio.questio.portfolio.exception;
+package team_questio.questio.common.exception.code;
 
 import org.springframework.http.HttpStatus;
 import team_questio.questio.common.exception.code.ErrorCode;

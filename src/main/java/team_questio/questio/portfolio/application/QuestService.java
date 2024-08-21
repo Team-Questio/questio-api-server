@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.portfolio.domain.Feedback;
-import team_questio.questio.portfolio.exception.PortfolioError;
+import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.portfolio.persistence.QuestRepository;
 import team_questio.questio.portfolio.application.command.QuestCreateCommand;
 import team_questio.questio.portfolio.application.dto.QuestDetailInfo;

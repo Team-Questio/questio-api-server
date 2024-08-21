@@ -2,7 +2,7 @@ package team_questio.questio.portfolio.domain;
 
 import java.util.Arrays;
 import team_questio.questio.common.exception.QuestioException;
-import team_questio.questio.portfolio.exception.PortfolioError;
+import team_questio.questio.common.exception.code.PortfolioError;
 
 public enum Feedback {
     GOOD(1),
