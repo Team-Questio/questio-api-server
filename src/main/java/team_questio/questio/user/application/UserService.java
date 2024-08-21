@@ -8,6 +8,7 @@ import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
 import team_questio.questio.user.application.command.SignUpCommand;
+import team_questio.questio.user.domain.AccountType;
 import team_questio.questio.user.domain.User;
 import team_questio.questio.user.persistence.UserRepository;
 
@@ -20,8 +21,11 @@ public class UserService {
     private final RedisUtil redisUtil;
 
     public void registerUser(SignUpCommand command) {
-        verifyEmailCertified(command.username());
+        if (userRepository.existsByUsernameAndUserAccountType(command.username(), AccountType.NORMAL)) {
+            throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
+        }
 
+        verifyEmailCertified(command.username());
         var encodedPassword = passwordEncoder.encode(command.password());
         var user = User.of(command.username(), encodedPassword);
         userRepository.save(user);
