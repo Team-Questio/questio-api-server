@@ -15,6 +15,8 @@ import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
 import team_questio.questio.security.util.CertificationUtil;
+import team_questio.questio.user.domain.AccountType;
+import team_questio.questio.user.persistence.UserRepository;
 
 @Service
 @RequiredArgsConstructor
@@ -26,8 +28,14 @@ public class AuthenticationService {
     private final JavaMailSender mailSender;
     private final SpringTemplateEngine templateEngine;
 
+    private final UserRepository userRepository;
+
     @Transactional
     public void sendEmail(String email) {
+        if (existsUsername(email)) {
+            throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
+        }
+
         var code = CertificationUtil.generateCertificationNumber();
         var htmlContent = createHtmlContent(code);
         MimeMessage message = mailSender.createMimeMessage();
@@ -43,6 +51,10 @@ public class AuthenticationService {
         }
 
         saveSecretCode(email, code);
+    }
+
+    private boolean existsUsername(String email) {
+        return userRepository.existsByUsernameAndUserAccountType(email, AccountType.NORMAL);
     }
 
     @Transactional
