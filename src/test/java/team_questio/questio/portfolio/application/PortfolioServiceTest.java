@@ -29,7 +29,8 @@ class PortfolioServiceTest {
         //given
         final Portfolio portfolio = new Portfolio(1L, "test");
         final Long wrongUser = 2L;
-        given(portfolioRepository.findById(any())).willReturn(java.util.Optional.of(portfolio));
+        given(portfolioRepository.findById(any()))
+            .willReturn(java.util.Optional.of(portfolio));
 
         //when && then
         Assertions.assertThatThrownBy(() -> portfolioService.getPortfolio(1L, wrongUser))
