@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import team_questio.questio.portfolio.presentation.dto.FeedbackRequest;
@@ -20,7 +21,7 @@ public interface PortfolioApiController {
     ResponseEntity<Void> createPortfolio(PortfolioRequest request, Authentication authentication);
 
 
-    @Operation(summary = "포트폴리오를 조회합니다.", description = "포트폴리오를 조회합니다.")
+    @Operation(summary = "포트폴리오를 조회합니다.", description = "나의 포트폴리오를 조회합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "포트폴리오 조회 성공")
     })
@@ -31,4 +32,10 @@ public interface PortfolioApiController {
         @ApiResponse(responseCode = "200", description = "평가 전송 성공")
     })
     ResponseEntity<Void> updateFeedback(Long questId, FeedbackRequest request);
+
+    @Operation(summary = "포트폴리오 목록을 조회합니다.", description = "나의 포트폴리오 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "포트폴리오 목록 조회 성공")
+    })
+    ResponseEntity<List<PortfolioResponse>> getPortfolios(Authentication authentication);
 }
