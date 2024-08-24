@@ -1,6 +1,7 @@
 package team_questio.questio.portfolio.application;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import team_questio.questio.common.annotation.Facade;
 import team_questio.questio.gpt.service.GPTService;
 import team_questio.questio.gpt.service.dto.GptParam;
@@ -31,5 +32,10 @@ public class PortfolioFacadeService {
         var questInfos = questService.getQuests(portfolioId);
 
         return PortfolioInfo.from(portfolioDetail, questInfos);
+    }
+
+    @Transactional
+    public void updateFeedback(Long questId, Integer feedback) {
+        questService.updateFeedback(questId, feedback);
     }
 }

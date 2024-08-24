@@ -5,12 +5,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team_questio.questio.portfolio.application.PortfolioFacadeService;
+import team_questio.questio.portfolio.presentation.dto.FeedbackRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioResponse;
 
@@ -36,5 +39,13 @@ public class PortfolioController implements PortfolioApiController {
         var response = PortfolioResponse.from(portfolioInfo);
         return ResponseEntity.ok()
                 .body(response);
+    }
+
+    @PatchMapping("/quest/{questId}")
+    public ResponseEntity<Void> updateFeedback(@PathVariable Long questId,
+        @RequestBody FeedbackRequest request) {
+
+        portfolioFacadeService.updateFeedback(questId, request.feedback());
+        return ResponseEntity.ok().build();
     }
 }
