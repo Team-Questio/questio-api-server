@@ -1,5 +1,6 @@
 package team_questio.questio.portfolio.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,5 +29,13 @@ public class PortfolioService {
         portfolio.checkOwner(userId);
 
         return PortfolioDetailInfo.from(portfolio);
+    }
+
+    @Transactional(readOnly = true)
+    public List<PortfolioDetailInfo> getPortfolios(Long userId) {
+        var portfolios = portfolioRepository.findByUserId(userId);
+        return portfolios.stream()
+                .map(PortfolioDetailInfo::from)
+                .toList();
     }
 }
