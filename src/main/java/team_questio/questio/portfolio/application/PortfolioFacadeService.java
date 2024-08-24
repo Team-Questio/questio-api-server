@@ -1,5 +1,6 @@
 package team_questio.questio.portfolio.application;
 
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.transaction.annotation.Transactional;
 import team_questio.questio.common.annotation.Facade;
@@ -37,5 +38,17 @@ public class PortfolioFacadeService {
     @Transactional
     public void updateFeedback(Long questId, Integer feedback) {
         questService.updateFeedback(questId, feedback);
+    }
+
+    public List<PortfolioInfo> getPortfolios(Long userId) {
+        var portfolioDetails = portfolioService.getPortfolios(userId);
+        var response = portfolioDetails.stream()
+                .map(portfolioDetail -> {
+                    var questInfos = questService.getQuests(portfolioDetail.id());
+                    return PortfolioInfo.from(portfolioDetail, questInfos);
+                })
+                .toList();
+
+        return response;
     }
 }
