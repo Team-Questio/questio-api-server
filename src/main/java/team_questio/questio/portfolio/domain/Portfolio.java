@@ -8,6 +8,8 @@ import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import team_questio.questio.common.exception.QuestioException;
+import team_questio.questio.common.exception.code.PortfolioError;
 
 @Entity
 @Getter
@@ -17,10 +19,19 @@ public class Portfolio {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long userId;
+
     @Column(length = 3000)
     private String content;
 
-    public Portfolio(String content) {
+    public Portfolio(Long userId, String content) {
+        this.userId = userId;
         this.content = content;
+    }
+
+    public void checkOwner(final Long userId) {
+        if (!this.userId.equals(userId)) {
+            throw QuestioException.of(PortfolioError.PORTFOLIO_NOT_OWN);
+        }
     }
 }
