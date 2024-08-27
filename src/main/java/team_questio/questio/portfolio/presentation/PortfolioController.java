@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import team_questio.questio.portfolio.application.PortfolioFacadeService;
 import team_questio.questio.portfolio.presentation.dto.FeedbackRequest;
+import team_questio.questio.portfolio.presentation.dto.GenerationResponse;
 import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioResponse;
 
@@ -26,15 +27,15 @@ public class PortfolioController implements PortfolioApiController {
     private final PortfolioFacadeService portfolioFacadeService;
 
     @PostMapping()
-    public ResponseEntity<Void> createPortfolio(@RequestBody PortfolioRequest request,
+    public ResponseEntity<GenerationResponse> createPortfolio(@RequestBody PortfolioRequest request,
                                                 Authentication authentication
     ) {
         Long userId = Long.valueOf(authentication.getPrincipal().toString());
         var command = request.toPortfolioParam(userId);
-        var portfolioId = portfolioFacadeService.createPortfolio(command);
+        var generationInfo = portfolioFacadeService.createPortfolio(command);
 
-        return ResponseEntity.created(URI.create("/api/v1/portfolio/" + portfolioId))
-                .build();
+        return ResponseEntity.created(URI.create("/api/v1/portfolio/" + generationInfo.portfolioId()))
+                .body(GenerationResponse.from(generationInfo));
     }
 
     @GetMapping("/{portfolioId}")

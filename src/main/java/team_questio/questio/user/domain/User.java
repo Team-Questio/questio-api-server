@@ -46,10 +46,12 @@ public class User extends BaseEntity {
         return new User(username, password, userAccountType);
     }
 
-    public void count(Integer quota) {
+    public Integer count(Integer quota) {
         if (this.usageCount.equals(quota)) {
             throw QuestioException.of(PortfolioError.EXCEEDED_ATTEMPTS);
         }
         this.usageCount++;
+
+        return quota - usageCount;
     }
 }
