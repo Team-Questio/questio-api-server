@@ -11,14 +11,15 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.web.util.UriComponentsBuilder;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.security.application.JWTTokenService;
 import team_questio.questio.security.application.dto.PrincipleDetails;
-import team_questio.questio.security.application.dto.TokenDetails;
 
 @Slf4j
 public class AuthenticationResultHandler implements AuthenticationSuccessHandler, AuthenticationFailureHandler {
     private final JWTTokenService jwtTokenService;
+    private static final String HOME_URL = "https://questio.co.kr/oauth";
 
     public AuthenticationResultHandler(JWTTokenService jwtTokenProvider) {
         this.jwtTokenService = jwtTokenProvider;
@@ -37,11 +38,15 @@ public class AuthenticationResultHandler implements AuthenticationSuccessHandler
 
     private void setSuccessResponse(HttpServletResponse response, String accessToken, String refreshToken)
             throws IOException {
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        TokenDetails tokenResponse = new TokenDetails(accessToken, refreshToken);
 
-        response.getWriter().write(new ObjectMapper().writeValueAsString(tokenResponse));
+        String redirectUrl = UriComponentsBuilder.fromUriString(HOME_URL)
+                .queryParam("response_type", "code")
+                .queryParam("accessToken", accessToken)
+                .queryParam("refreshToken", refreshToken)
+                .build()
+                .toUriString();
+        
+        response.sendRedirect(redirectUrl);
     }
 
     @Override
