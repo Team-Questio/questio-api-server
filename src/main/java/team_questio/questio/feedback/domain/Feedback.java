@@ -17,7 +17,7 @@ public class Feedback extends BaseEntity {
     @Column(length = 1000)
     private String content;
 
-    public Feedback(Long userId, String content) {
+    private Feedback(Long userId, String content) {
         this.userId = userId;
         this.content = content;
     }
