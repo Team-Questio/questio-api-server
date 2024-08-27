@@ -6,7 +6,8 @@ public enum PortfolioError implements ErrorCode {
     PORTFOLIO_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "포트폴리오를 찾을 수 없습니다."),
     PORTFOLIO_NOT_OWN(HttpStatus.UNAUTHORIZED, "P002", "포트폴리오에 접근할 수 없습니다."),
     QUEST_NOT_FOUND(HttpStatus.NOT_FOUND, "P001", "일치하는 질문을 찾을 수 없습니다"),
-    FEEDBACK_INVALID(HttpStatus.BAD_REQUEST, "P002", "적절하지 않은 피드백입니다.");
+    FEEDBACK_INVALID(HttpStatus.BAD_REQUEST, "P002", "적절하지 않은 피드백입니다."),
+    EXCEEDED_ATTEMPTS(HttpStatus.FORBIDDEN, "P005", "포트폴리오 업로드 한도를 초과하였습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

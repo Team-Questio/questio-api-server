@@ -8,6 +8,7 @@ import team_questio.questio.gpt.service.GPTService;
 import team_questio.questio.gpt.service.dto.GptParam;
 import team_questio.questio.portfolio.application.command.PortfolioCommand;
 import team_questio.questio.portfolio.application.dto.PortfolioInfo;
+import team_questio.questio.user.application.UserService;
 
 @Facade
 @RequiredArgsConstructor
@@ -15,8 +16,11 @@ public class PortfolioFacadeService {
     private final PortfolioService portfolioService;
     private final GPTService gptService;
     private final QuestService questService;
+    private final UserService userService;
 
     public Long createPortfolio(PortfolioCommand portfolioCommand) {
+        userService.count(portfolioCommand.userId());
+
         var portfolioId = portfolioService.createPortfolio(portfolioCommand);
         var questions = gptService.generateQuestion(GptParam.of(portfolioCommand.content()));
 
