@@ -50,7 +50,7 @@ public class PortfolioController implements PortfolioApiController {
                 .body(response);
     }
 
-    @Override
+    @GetMapping()
     public ResponseEntity<List<PortfolioResponse>> getPortfolios(Authentication authentication) {
         Long userId = Long.valueOf(authentication.getPrincipal().toString());
         var portfolios = portfolioFacadeService.getPortfolios(userId);
