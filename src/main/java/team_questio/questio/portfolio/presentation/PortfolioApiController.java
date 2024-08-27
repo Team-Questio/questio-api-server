@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import team_questio.questio.portfolio.presentation.dto.FeedbackRequest;
+import team_questio.questio.portfolio.presentation.dto.GenerationResponse;
 import team_questio.questio.portfolio.presentation.dto.PortfolioRequest;
 import team_questio.questio.portfolio.presentation.dto.PortfolioResponse;
 
@@ -18,7 +19,7 @@ public interface PortfolioApiController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "포트폴리오 생성 성공")
     })
-    ResponseEntity<Void> createPortfolio(PortfolioRequest request, Authentication authentication);
+    ResponseEntity<GenerationResponse> createPortfolio(PortfolioRequest request, Authentication authentication);
 
 
     @Operation(summary = "포트폴리오를 조회합니다.", description = "나의 포트폴리오를 조회합니다.")
