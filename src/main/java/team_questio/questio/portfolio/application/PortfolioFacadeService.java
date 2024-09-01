@@ -16,6 +16,7 @@ public class PortfolioFacadeService {
     private final GPTService gptService;
     private final QuestService questService;
 
+    @Transactional
     public Long createPortfolio(PortfolioCommand portfolioCommand) {
         var portfolioId = portfolioService.createPortfolio(portfolioCommand);
         var questions = gptService.generateQuestion(GptParam.of(portfolioCommand.content()));
