@@ -16,6 +16,7 @@ public class PortfolioFacadeService {
     private final GPTService gptService;
     private final QuestService questService;
 
+    @Transactional
     public Long createPortfolio(PortfolioCommand portfolioCommand) {
         var portfolioId = portfolioService.createPortfolio(portfolioCommand);
         var questions = gptService.generateQuestion(GptParam.of(portfolioCommand.content()));
@@ -28,6 +29,12 @@ public class PortfolioFacadeService {
         return portfolioId;
     }
 
+    @Transactional
+    public void updateFeedback(Long questId, Integer feedback) {
+        questService.updateFeedback(questId, feedback);
+    }
+
+    @Transactional(readOnly = true)
     public PortfolioInfo getPortfolio(Long portfolioId, Long userId) {
         var portfolioDetail = portfolioService.getPortfolio(portfolioId, userId);
         var questInfos = questService.getQuests(portfolioId);
@@ -35,11 +42,7 @@ public class PortfolioFacadeService {
         return PortfolioInfo.from(portfolioDetail, questInfos);
     }
 
-    @Transactional
-    public void updateFeedback(Long questId, Integer feedback) {
-        questService.updateFeedback(questId, feedback);
-    }
-
+    @Transactional(readOnly = true)
     public List<PortfolioInfo> getPortfolios(Long userId) {
         var portfolioDetails = portfolioService.getPortfolios(userId);
         var response = portfolioDetails.stream()
