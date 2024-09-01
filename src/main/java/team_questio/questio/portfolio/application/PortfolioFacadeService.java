@@ -19,6 +19,7 @@ public class PortfolioFacadeService {
     private final QuestService questService;
     private final UserService userService;
 
+    @Transactional
     public GenerationInfo createPortfolio(PortfolioCommand portfolioCommand) {
         var remaining = userService.count(portfolioCommand.userId());
 
