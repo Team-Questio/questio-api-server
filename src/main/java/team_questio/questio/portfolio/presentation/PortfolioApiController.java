@@ -16,7 +16,10 @@ public interface PortfolioApiController {
 
     @Operation(summary = "포트폴리오를 생성합니다.", description = "포트폴리오를 생성합니다.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "포트폴리오 생성 성공")
+            @ApiResponse(responseCode = "201", description = "포트폴리오 생성 성공"),
+            @ApiResponse(responseCode = "G001", description = "포트폴리오 컨텐츠가 CS와 관련이 없다고 판단되었습니다."),
+            @ApiResponse(responseCode = "G002", description = "질문 JSON 파싱 중 오류가 발생했습니다."),
+            @ApiResponse(responseCode = "G003", description = "질문 생성 중 오류가 발생했습니다.")
     })
     ResponseEntity<Void> createPortfolio(PortfolioRequest request, Authentication authentication);
 
@@ -31,9 +34,9 @@ public interface PortfolioApiController {
 
     @Operation(summary = "평가를 전송합니다.", description = "평가를 전송합니다.")
     @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "평가 전송 성공"),
-        @ApiResponse(responseCode = "P003", description = "일치하는 질문을 찾을 수 없습니다"),
-        @ApiResponse(responseCode = "P004", description = "적절하지 않은 피드백입니다.")
+            @ApiResponse(responseCode = "200", description = "평가 전송 성공"),
+            @ApiResponse(responseCode = "P003", description = "일치하는 질문을 찾을 수 없습니다."),
+            @ApiResponse(responseCode = "P004", description = "적절하지 않은 피드백입니다.")
     })
     ResponseEntity<Void> updateFeedback(Long questId, FeedbackRequest request);
 
