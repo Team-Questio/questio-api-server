@@ -69,5 +69,6 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/questio:latest
             docker stop questio || true
+            docker rm questio || true
             docker image prune -a
             docker run -d --name questio -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/questio:latest

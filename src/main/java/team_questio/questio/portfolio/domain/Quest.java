@@ -20,7 +20,9 @@ public class Quest {
     private Long id;
 
     private String question;
+
     private String answer;
+
     @Enumerated(EnumType.STRING)
     private Feedback feedback;
 
@@ -31,6 +33,7 @@ public class Quest {
         this.question = question;
         this.answer = answer;
         this.portfolioId = portfolioId;
+        this.feedback = Feedback.NONE;
     }
 
     public void updateFeedback(Feedback feedback) {
