@@ -6,8 +6,8 @@ import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.DynamicInsert;
+import org.springframework.beans.factory.annotation.Value;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.common.persistence.BaseEntity;
@@ -26,7 +26,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType userAccountType = AccountType.NORMAL;
 
-    @ColumnDefault("0")
+    @Value("${portfolio.quota}")
     private Integer usageCount;
 
     private User(String username, String password) {
@@ -48,7 +48,7 @@ public class User extends BaseEntity {
         return new User(username, password, userAccountType);
     }
 
-    public Integer count(Integer quota) {
+    public Integer countRemaining(Integer quota) {
         if (this.usageCount.equals(quota)) {
             throw QuestioException.of(PortfolioError.EXCEEDED_ATTEMPTS);
         }

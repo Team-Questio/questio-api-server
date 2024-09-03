@@ -35,10 +35,10 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Integer count(Long id) {
+    public Integer countRemaining(Long id) {
         var user = userRepository.findById(id)
             .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
-        return user.count(quota);
+        return user.countRemaining(quota);
     }
 
     private boolean existUsername(final String username) {

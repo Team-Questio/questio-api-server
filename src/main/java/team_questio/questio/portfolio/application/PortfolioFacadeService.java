@@ -21,7 +21,7 @@ public class PortfolioFacadeService {
 
     @Transactional
     public GenerationInfo createPortfolio(PortfolioCommand portfolioCommand) {
-        var remaining = userService.count(portfolioCommand.userId());
+        var remaining = userService.countRemaining(portfolioCommand.userId());
 
         var portfolioId = portfolioService.createPortfolio(portfolioCommand);
         var questions = gptService.generateQuestion(GptParam.of(portfolioCommand.content()));
