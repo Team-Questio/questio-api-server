@@ -14,7 +14,8 @@ public interface UserApiController {
     @Operation(summary = "회원가입을 진행합니다.", description = "회원가입 시 제출되는 username은 인증이 완료된 이메일 주소입니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "회원가입 성공"),
-            @ApiResponse(responseCode = "A006", description = "회원가시 제출된 이메일이 인증되지 않았습니다.")
+            @ApiResponse(responseCode = "A006", description = "회원가입 시 제출된 이메일이 인증되지 않았습니다."),
+            @ApiResponse(responseCode = "A009", description = "이미 가입된 이메일입니다")
     })
     @PostMapping
     void signUp(@RequestBody(description = "회원가입 시 저장될 사용자 정보입니다.", required = true) SignUpRequest request);

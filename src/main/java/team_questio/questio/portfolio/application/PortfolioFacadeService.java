@@ -34,6 +34,12 @@ public class PortfolioFacadeService {
         return GenerationInfo.of(portfolioId, remaining);
     }
 
+    @Transactional
+    public void updateFeedback(Long questId, Integer feedback) {
+        questService.updateFeedback(questId, feedback);
+    }
+
+    @Transactional(readOnly = true)
     public PortfolioInfo getPortfolio(Long portfolioId, Long userId) {
         var portfolioDetail = portfolioService.getPortfolio(portfolioId, userId);
         var questInfos = questService.getQuests(portfolioId);
@@ -41,11 +47,7 @@ public class PortfolioFacadeService {
         return PortfolioInfo.from(portfolioDetail, questInfos);
     }
 
-    @Transactional
-    public void updateFeedback(Long questId, Integer feedback) {
-        questService.updateFeedback(questId, feedback);
-    }
-
+    @Transactional(readOnly = true)
     public List<PortfolioInfo> getPortfolios(Long userId) {
         var portfolioDetails = portfolioService.getPortfolios(userId);
         var response = portfolioDetails.stream()
