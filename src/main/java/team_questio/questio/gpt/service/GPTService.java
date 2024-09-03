@@ -33,7 +33,7 @@ public class GPTService {
         if (response.getStatusCode().isError()) {
             throw QuestioException.of(GPTError.PORTFOLIO_GENERATE_ERROR);
         }
-
+        log.info(response.getBody());
         return parseResponse(response.getBody());
     }
 
