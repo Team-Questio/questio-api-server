@@ -5,7 +5,10 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
+import team_questio.questio.user.persentation.dto.RemainingResponse;
 import team_questio.questio.user.persentation.dto.SignUpRequest;
 
 @Tag(name = "사용자 담당 API", description = "사용자 정보를 담당합니다")
@@ -19,4 +22,10 @@ public interface UserApiController {
     })
     @PostMapping
     void signUp(@RequestBody(description = "회원가입 시 저장될 사용자 정보입니다.", required = true) SignUpRequest request);
+
+    @Operation(summary = "잔여 횟수를 조회합니다.", description = "잔여 업로드 횟수를 조회합니다.")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "잔여 횟수 조회 성공")
+    })
+    ResponseEntity<RemainingResponse> getRemaining(Authentication authentication);
 }

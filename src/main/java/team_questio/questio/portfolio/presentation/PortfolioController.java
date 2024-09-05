@@ -38,6 +38,18 @@ public class PortfolioController implements PortfolioApiController {
                 .body(GenerationResponse.from(generationInfo));
     }
 
+    @GetMapping()
+    public ResponseEntity<List<PortfolioResponse>> getPortfolios(Authentication authentication) {
+        Long userId = Long.valueOf(authentication.getPrincipal().toString());
+        var portfolios = portfolioFacadeService.getPortfolios(userId);
+
+        var response = portfolios.stream()
+            .map(PortfolioResponse::from)
+            .toList();
+        return ResponseEntity.ok()
+            .body(response);
+    }
+
     @GetMapping("/{portfolioId}")
     public ResponseEntity<PortfolioResponse> getPortfolio(@PathVariable Long portfolioId,
                                                           Authentication authentication
@@ -47,18 +59,6 @@ public class PortfolioController implements PortfolioApiController {
         var portfolioInfo = portfolioFacadeService.getPortfolio(portfolioId, userId);
 
         var response = PortfolioResponse.from(portfolioInfo);
-        return ResponseEntity.ok()
-                .body(response);
-    }
-
-    @GetMapping()
-    public ResponseEntity<List<PortfolioResponse>> getPortfolios(Authentication authentication) {
-        Long userId = Long.valueOf(authentication.getPrincipal().toString());
-        var portfolios = portfolioFacadeService.getPortfolios(userId);
-
-        var response = portfolios.stream()
-                .map(PortfolioResponse::from)
-                .toList();
         return ResponseEntity.ok()
                 .body(response);
     }
