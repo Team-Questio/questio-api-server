@@ -65,7 +65,9 @@ public class GPTService {
     }
 
     private JsonNode parseQuestions(JsonNode rootNode) throws JsonProcessingException {
-        var questionsNode = objectMapper.readTree(rootNode.asText());
+        String jsonString = rootNode.asText().replace("```json", "").replace("```", "").trim();
+
+        var questionsNode = objectMapper.readTree(jsonString);
 
         return questionsNode.get("questions");
     }
