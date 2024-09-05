@@ -24,6 +24,11 @@ public interface PortfolioApiController {
     })
     ResponseEntity<GenerationResponse> createPortfolio(PortfolioRequest request, Authentication authentication);
 
+    @Operation(summary = "포트폴리오 목록을 조회합니다.", description = "나의 포트폴리오 목록을 조회합니다.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "포트폴리오 목록 조회 성공")
+    })
+    ResponseEntity<List<PortfolioResponse>> getPortfolios(Authentication authentication);
 
     @Operation(summary = "포트폴리오를 조회합니다.", description = "나의 포트폴리오를 조회합니다.")
     @ApiResponses(value = {
@@ -40,10 +45,4 @@ public interface PortfolioApiController {
             @ApiResponse(responseCode = "P004", description = "적절하지 않은 피드백입니다.")
     })
     ResponseEntity<Void> updateFeedback(Long questId, FeedbackRequest request);
-
-    @Operation(summary = "포트폴리오 목록을 조회합니다.", description = "나의 포트폴리오 목록을 조회합니다.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "포트폴리오 목록 조회 성공")
-    })
-    ResponseEntity<List<PortfolioResponse>> getPortfolios(Authentication authentication);
 }
