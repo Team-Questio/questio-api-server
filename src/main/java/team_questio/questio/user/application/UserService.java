@@ -35,6 +35,14 @@ public class UserService {
         userRepository.save(user);
     }
 
+    public Integer deductRemaining(Long id) {
+        var user = userRepository.findById(id)
+            .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
+
+        user.deductRemaining(quota);
+        return user.countRemaining(quota);
+    }
+
     public Integer countRemaining(Long id) {
         var user = userRepository.findById(id)
             .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
