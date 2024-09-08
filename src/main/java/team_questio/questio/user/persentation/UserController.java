@@ -32,6 +32,6 @@ public class UserController implements UserApiController {
         Long id = Long.valueOf(authentication.getPrincipal().toString());
 
         return ResponseEntity.ok()
-            .body(RemainingResponse.of(userService.countRemaining(id)));
+            .body(RemainingResponse.of(userService.getQuota(id)));
     }
 }

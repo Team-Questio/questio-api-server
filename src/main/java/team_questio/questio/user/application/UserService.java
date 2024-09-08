@@ -21,7 +21,7 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
 
-    @Value("${portfolio.quota}")
+    @Value("${user.quota}")
     private Integer quota;
 
     public void registerUser(SignUpCommand command) {
@@ -31,22 +31,22 @@ public class UserService {
 
         verifyEmailCertified(command.username());
         var encodedPassword = passwordEncoder.encode(command.password());
-        var user = User.of(command.username(), encodedPassword);
+        var user = User.of(command.username(), encodedPassword, quota);
         userRepository.save(user);
     }
 
-    public Integer deductRemaining(Long id) {
+    public Integer deductQuota(Long id) {
         var user = userRepository.findById(id)
             .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
 
-        user.deductRemaining(quota);
-        return user.countRemaining(quota);
+        user.deductQuota();
+        return user.getQuota();
     }
 
-    public Integer countRemaining(Long id) {
+    public Integer getQuota(Long id) {
         var user = userRepository.findById(id)
             .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
-        return user.countRemaining(quota);
+        return user.getQuota();
     }
 
     private boolean existUsername(final String username) {
@@ -59,5 +59,4 @@ public class UserService {
                 .orElseThrow(() -> QuestioException.of(AuthError.CERTIFICATION_INFO_NOT_FOUND));
         redisUtil.deleteData(key);
     }
-
 }

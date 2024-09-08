@@ -6,15 +6,12 @@ import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.common.persistence.BaseEntity;
 
 @Entity
 @Getter
-@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
     private String username;
@@ -26,36 +23,33 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType userAccountType = AccountType.NORMAL;
 
-    @ColumnDefault("0")
-    private Integer usageCount;
+    private Integer quota;
 
-    private User(String username, String password) {
+    private User(String username, String password, Integer quota) {
         this.username = username;
         this.password = password;
+        this.quota = quota;
     }
 
-    private User(String username, String password, AccountType userAccountType) {
+    private User(String username, String password, AccountType userAccountType, Integer quota) {
         this.username = username;
         this.password = password;
         this.userAccountType = userAccountType;
+        this.quota = quota;
     }
 
-    public static User of(String username, String password) {
-        return new User(username, password);
+    public static User of(String username, String password, Integer quota) {
+        return new User(username, password, quota);
     }
 
-    public static User of(String username, String password, AccountType userAccountType) {
-        return new User(username, password, userAccountType);
+    public static User of(String username, String password, AccountType userAccountType, Integer quota) {
+        return new User(username, password, userAccountType, quota);
     }
 
-    public void deductRemaining(Integer quota) {
-        if (this.usageCount.equals(quota)) {
-            throw QuestioException.of(PortfolioError.EXCEEDED_ATTEMPTS);
+    public void deductQuota() {
+        if (this.quota.equals(0)) {
+            throw QuestioException.of(PortfolioError.EXCEEDED_ATTEMPT);
         }
-        this.usageCount++;
-    }
-
-    public Integer countRemaining(Integer quota) {
-        return quota - usageCount;
+        this.quota--;
     }
 }
