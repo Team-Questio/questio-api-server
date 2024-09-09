@@ -37,7 +37,7 @@ public class UserService {
 
     public Integer countRemaining(Long id) {
         var user = userRepository.findById(id)
-            .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
+                .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
         return user.countRemaining(quota);
     }
 
@@ -50,6 +50,14 @@ public class UserService {
         redisUtil.getData(key, String.class)
                 .orElseThrow(() -> QuestioException.of(AuthError.CERTIFICATION_INFO_NOT_FOUND));
         redisUtil.deleteData(key);
+    }
+
+
+    public String getUsername(final Long id) {
+        var user = userRepository.findById(id)
+                .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
+
+        return user.getUsername();
     }
 
 }
