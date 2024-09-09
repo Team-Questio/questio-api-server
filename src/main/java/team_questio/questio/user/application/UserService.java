@@ -2,7 +2,6 @@ package team_questio.questio.user.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team_questio.questio.common.exception.QuestioException;
@@ -21,9 +20,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
 
-    @Value("${user.quota}")
-    private Integer quota;
-
     public void registerUser(SignUpCommand command) {
         if (existUsername(command.username())) {
             throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
@@ -31,7 +27,7 @@ public class UserService {
 
         verifyEmailCertified(command.username());
         var encodedPassword = passwordEncoder.encode(command.password());
-        var user = User.of(command.username(), encodedPassword, quota);
+        var user = User.of(command.username(), encodedPassword);
         userRepository.save(user);
     }
 

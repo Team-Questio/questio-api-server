@@ -6,6 +6,7 @@ import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.common.persistence.BaseEntity;
@@ -23,27 +24,26 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType userAccountType = AccountType.NORMAL;
 
-    private Integer quota;
+    @ColumnDefault("0")
+    private Integer quota = 5;
 
-    private User(String username, String password, Integer quota) {
+    private User(String username, String password) {
         this.username = username;
         this.password = password;
-        this.quota = quota;
     }
 
-    private User(String username, String password, AccountType userAccountType, Integer quota) {
+    private User(String username, String password, AccountType userAccountType) {
         this.username = username;
         this.password = password;
         this.userAccountType = userAccountType;
-        this.quota = quota;
     }
 
-    public static User of(String username, String password, Integer quota) {
-        return new User(username, password, quota);
+    public static User of(String username, String password) {
+        return new User(username, password);
     }
 
-    public static User of(String username, String password, AccountType userAccountType, Integer quota) {
-        return new User(username, password, userAccountType, quota);
+    public static User of(String username, String password, AccountType userAccountType) {
+        return new User(username, password, userAccountType);
     }
 
     public void deductQuota() {

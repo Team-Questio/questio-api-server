@@ -4,7 +4,6 @@ import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -24,9 +23,6 @@ import team_questio.questio.user.persistence.UserRepository;
 @RequiredArgsConstructor
 public class PrincipleDetailService extends DefaultOAuth2UserService implements UserDetailsService {
     private final UserRepository userRepository;
-
-    @Value("${user.quota}")
-    private Integer quota;
 
     /*
      * This method is used to normal user login.
@@ -92,7 +88,7 @@ public class PrincipleDetailService extends DefaultOAuth2UserService implements 
 
     private void registerOAuthUser(String username, AccountType registration) {
         var password = RandomStringUtils.random(20);
-        var user = User.of(username, password, registration, quota);
+        var user = User.of(username, password, registration);
         userRepository.save(user);
     }
 }
