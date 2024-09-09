@@ -6,7 +6,6 @@ import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.common.persistence.BaseEntity;
@@ -24,7 +23,6 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType userAccountType = AccountType.NORMAL;
 
-    @ColumnDefault("0")
     private Integer quota = 5;
 
     private User(String username, String password) {
