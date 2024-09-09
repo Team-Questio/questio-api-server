@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import team_questio.questio.user.application.UserService;
 import team_questio.questio.user.persentation.dto.RemainingResponse;
 import team_questio.questio.user.persentation.dto.SignUpRequest;
+import team_questio.questio.user.persentation.dto.UserInfoResponse;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -27,11 +28,21 @@ public class UserController implements UserApiController {
         userService.registerUser(command);
     }
 
-    @GetMapping
+    @GetMapping("/remaining")
     public ResponseEntity<RemainingResponse> getRemaining(Authentication authentication) {
         Long id = Long.valueOf(authentication.getPrincipal().toString());
 
         return ResponseEntity.ok()
             .body(RemainingResponse.of(userService.getQuota(id)));
+    }
+
+    @GetMapping("/username")
+    public ResponseEntity<UserInfoResponse> getUsername(Authentication authentication) {
+        var id = Long.valueOf(authentication.getPrincipal().toString());
+        var username = userService.getUsername(id);
+
+        var response = UserInfoResponse.of(username);
+        return ResponseEntity.ok()
+                .body(response);
     }
 }
