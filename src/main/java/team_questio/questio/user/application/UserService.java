@@ -2,7 +2,6 @@ package team_questio.questio.user.application;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import team_questio.questio.common.exception.QuestioException;
@@ -21,9 +20,6 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
 
-    @Value("${portfolio.quota}")
-    private Integer quota;
-
     public void registerUser(SignUpCommand command) {
         if (existUsername(command.username())) {
             throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
@@ -35,10 +31,18 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public Integer countRemaining(Long id) {
+    public Integer deductQuota(Long id) {
         var user = userRepository.findById(id)
-                .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
-        return user.countRemaining(quota);
+            .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
+
+        user.deductQuota();
+        return user.getQuota();
+    }
+
+    public Integer getQuota(Long id) {
+        var user = userRepository.findById(id)
+            .orElseThrow(() -> QuestioException.of(AuthError.USER_NOT_FOUND));
+        return user.getQuota();
     }
 
     private boolean existUsername(final String username) {
@@ -59,5 +63,4 @@ public class UserService {
 
         return user.getUsername();
     }
-
 }

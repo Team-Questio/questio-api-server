@@ -6,15 +6,12 @@ import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicInsert;
 import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.PortfolioError;
 import team_questio.questio.common.persistence.BaseEntity;
 
 @Entity
 @Getter
-@DynamicInsert
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends BaseEntity {
     private String username;
@@ -26,8 +23,7 @@ public class User extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private AccountType userAccountType = AccountType.NORMAL;
 
-    @ColumnDefault("0")
-    private Integer usageCount;
+    private Integer quota = 5;
 
     private User(String username, String password) {
         this.username = username;
@@ -48,12 +44,10 @@ public class User extends BaseEntity {
         return new User(username, password, userAccountType);
     }
 
-    public Integer countRemaining(Integer quota) {
-        if (this.usageCount.equals(quota)) {
-            throw QuestioException.of(PortfolioError.EXCEEDED_ATTEMPTS);
+    public void deductQuota() {
+        if (this.quota.equals(0)) {
+            throw QuestioException.of(PortfolioError.EXCEEDED_ATTEMPT);
         }
-        this.usageCount++;
-
-        return quota - usageCount;
+        this.quota--;
     }
 }

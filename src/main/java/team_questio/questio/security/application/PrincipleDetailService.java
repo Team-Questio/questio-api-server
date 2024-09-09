@@ -91,5 +91,4 @@ public class PrincipleDetailService extends DefaultOAuth2UserService implements 
         var user = User.of(username, password, registration);
         userRepository.save(user);
     }
-
 }
