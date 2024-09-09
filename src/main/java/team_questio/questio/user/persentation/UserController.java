@@ -28,7 +28,7 @@ public class UserController implements UserApiController {
         userService.registerUser(command);
     }
 
-    @GetMapping
+    @GetMapping("/remaining")
     public ResponseEntity<RemainingResponse> getRemaining(Authentication authentication) {
         Long id = Long.valueOf(authentication.getPrincipal().toString());
 
