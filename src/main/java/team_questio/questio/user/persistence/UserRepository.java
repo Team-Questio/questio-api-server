@@ -8,7 +8,7 @@ import team_questio.questio.user.domain.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    boolean existsByUsernameAndUserAccountType(String username, AccountType userAccountType);
+    Optional<User> findByUsername(String username);
 
     Optional<User> findByUsernameAndUserAccountType(String username, AccountType userAccountType);
 }
