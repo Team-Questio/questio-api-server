@@ -30,10 +30,12 @@ public class UserController implements UserApiController {
 
     @GetMapping("/remaining")
     public ResponseEntity<RemainingResponse> getRemaining(Authentication authentication) {
-        Long id = Long.valueOf(authentication.getPrincipal().toString());
+        var id = Long.valueOf(authentication.getPrincipal().toString());
+        var quota = userService.getQuota(id);
 
+        var response = RemainingResponse.of(quota);
         return ResponseEntity.ok()
-            .body(RemainingResponse.of(userService.getQuota(id)));
+            .body(response);
     }
 
     @GetMapping("/username")
