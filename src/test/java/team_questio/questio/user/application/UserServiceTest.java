@@ -17,6 +17,7 @@ import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
 import team_questio.questio.user.application.command.SignUpCommand;
+import team_questio.questio.user.domain.AccountType;
 import team_questio.questio.user.domain.User;
 import team_questio.questio.user.persistence.UserRepository;
 
@@ -32,9 +33,9 @@ class UserServiceTest {
     @InjectMocks
     private UserService userService;
 
-    @DisplayName("[유저 테스트] 중복된 이메일 테스트")
+    @DisplayName("[유저 테스트] 중복된 이메일 테스트 / normal -> normal")
     @Test
-    void duplicatedEmailTest() {
+    void duplicatedEmailInNormalTest() {
         //given
         final String email = "test@test.com";
         final String password = "test";
@@ -47,6 +48,24 @@ class UserServiceTest {
         assertThatThrownBy(() -> userService.registerUser(command))
                 .isInstanceOf(QuestioException.class)
                 .hasMessage(AuthError.EMAIL_ALREADY_EXISTS_NORMAL.message());
+    }
+
+    @DisplayName("[유저 테스트] 중복된 이메일 테스트 / normal -> oauth(google)")
+    @Test
+    void duplicatedEmailInOauthTest() {
+        //given
+        final String email = "test@test.com";
+        final String password = "test";
+        final AccountType accountType = AccountType.GOOGLE;
+        final User user = User.of(email, password, accountType);
+        SignUpCommand command = new SignUpCommand(email, password);
+        given(userRepository.findByUsername(any()))
+                .willReturn(Optional.of(user));
+
+        //when, then
+        assertThatThrownBy(() -> userService.registerUser(command))
+                .isInstanceOf(QuestioException.class)
+                .hasMessage(AuthError.EMAIL_ALREADY_EXIST_GOOGLE.message());
     }
 
 
