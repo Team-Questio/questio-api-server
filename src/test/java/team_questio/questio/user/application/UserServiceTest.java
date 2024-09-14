@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
+import java.util.Optional;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +17,7 @@ import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
 import team_questio.questio.user.application.command.SignUpCommand;
+import team_questio.questio.user.domain.User;
 import team_questio.questio.user.persistence.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,13 +38,15 @@ class UserServiceTest {
         //given
         final String email = "test@test.com";
         final String password = "test";
+        final User user = User.of(email, password);
         SignUpCommand command = new SignUpCommand(email, password);
-        given(userRepository.existsByUsernameAndUserAccountType(any(), any())).willReturn(true);
+        given(userRepository.findByUsername(any()))
+                .willReturn(Optional.of(user));
 
         //when, then
         assertThatThrownBy(() -> userService.registerUser(command))
                 .isInstanceOf(QuestioException.class)
-                .hasMessage(AuthError.EMAIL_ALREADY_EXISTS.message());
+                .hasMessage(AuthError.EMAIL_ALREADY_EXISTS_NORMAL.message());
     }
 
 
