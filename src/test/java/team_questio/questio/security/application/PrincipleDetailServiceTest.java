@@ -42,8 +42,8 @@ class PrincipleDetailServiceTest {
     private PrincipleDetailService principleDetailService;
 
     @Test
-    @DisplayName("[Oauth2 회원가입 테스트] 중복된 이메일")
-    void registerUserWithDuplicatedEmailTest() {
+    @DisplayName("[Oauth2 회원가입 테스트] 중복된 이메일 / oauth -> normal")
+    void registerUserWithDuplicatedEmailInNormalTest() {
         final String oauthServer = "google";
         final String emailKey = "email";
 
@@ -60,6 +60,7 @@ class PrincipleDetailServiceTest {
         when(defaultOAuth2UserService.loadUser(oAuth2UserRequest))
                 .thenReturn(oAuth2User);
 
+        // PrincipleDetailService.loadUser()에서 호출되는 메서드
         when(oAuth2User.getAttributes())
                 .thenReturn(Map.of(emailKey, email));
         when(userRepository.existsByUsernameAndUserAccountType(email, AccountType.GOOGLE))
@@ -70,5 +71,39 @@ class PrincipleDetailServiceTest {
         assertThatThrownBy(() -> principleDetailService.loadUser(oAuth2UserRequest))
                 .isInstanceOf(QuestioException.class)
                 .hasMessage(AuthError.EMAIL_ALREADY_EXISTS_NORMAL.message());
+    }
+
+    @Test
+    @DisplayName("[Oauth2 회원가입 테스트] 중복된 이메일 / oauth -> oauth")
+    void registerUserWithDuplicatedEmailInOauthTest() {
+        final String oauthServer = "google";
+        final String emailKey = "email";
+
+        // existUser
+        final String email = "test@test.com";
+        final String password = "test";
+        final AccountType accountType = AccountType.KAKAO;
+
+        final User user = User.of(email, password, accountType);
+
+        // DefaultOAuth2UserService.loadUser()에서 호출되는 메서드
+        when(oAuth2UserRequest.getClientRegistration())
+                .thenReturn(clientRegistration);
+        when(oAuth2UserRequest.getClientRegistration().getRegistrationId())
+                .thenReturn(oauthServer);
+        when(defaultOAuth2UserService.loadUser(oAuth2UserRequest))
+                .thenReturn(oAuth2User);
+
+        // PrincipleDetailService.loadUser()에서 호출되는 메서드
+        when(oAuth2User.getAttributes())
+                .thenReturn(Map.of(emailKey, email));
+        when(userRepository.existsByUsernameAndUserAccountType(email, AccountType.GOOGLE))
+                .thenReturn(false);
+        when(userRepository.findByUsername(email))
+                .thenReturn(Optional.of(user));
+
+        assertThatThrownBy(() -> principleDetailService.loadUser(oAuth2UserRequest))
+                .isInstanceOf(QuestioException.class)
+                .hasMessage(AuthError.EMAIL_ALREADY_EXISTS_KAKAO.message());
     }
 }
