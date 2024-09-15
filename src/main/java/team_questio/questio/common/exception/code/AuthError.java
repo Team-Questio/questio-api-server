@@ -11,7 +11,10 @@ public enum AuthError implements ErrorCode {
     CERTIFICATION_INFO_NOT_FOUND(HttpStatus.NOT_FOUND, "A006", "인증 정보를 찾을 수 없습니다."),
     AUTHORIZATION_FAILED(HttpStatus.UNAUTHORIZED, "A007", "유효하지 않은 토큰입니다"),
     INVALID_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "A008", "유효하지 않은 리프레시 토큰입니다"),
-    EMAIL_ALREADY_EXISTS(HttpStatus.BAD_REQUEST, "A009", "이미 가입된 이메일입니다");
+    EMAIL_ALREADY_EXISTS_NORMAL(HttpStatus.BAD_REQUEST, "A009", "이미 일반 계정으로 가입된 이메일입니다"),
+    EMAIL_ALREADY_EXISTS_KAKAO(HttpStatus.BAD_REQUEST, "A010", "이미 카카오 계정으로 가입된 이메일입니다"),
+    EMAIL_ALREADY_EXIST_NAVER(HttpStatus.BAD_REQUEST, "A011", "이미 네이버 계정으로 가입된 이메일입니다"),
+    EMAIL_ALREADY_EXIST_GOOGLE(HttpStatus.BAD_REQUEST, "A012", "이미 구글 계정으로 가입된 이메일입니다");
 
     private final HttpStatus httpStatus;
     private final String code;

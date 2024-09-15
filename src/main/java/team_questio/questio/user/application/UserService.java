@@ -8,7 +8,6 @@ import team_questio.questio.common.exception.QuestioException;
 import team_questio.questio.common.exception.code.AuthError;
 import team_questio.questio.infra.RedisUtil;
 import team_questio.questio.user.application.command.SignUpCommand;
-import team_questio.questio.user.domain.AccountType;
 import team_questio.questio.user.domain.User;
 import team_questio.questio.user.persistence.UserRepository;
 
@@ -21,9 +20,7 @@ public class UserService {
     private final RedisUtil redisUtil;
 
     public void registerUser(SignUpCommand command) {
-        if (existUsername(command.username())) {
-            throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS);
-        }
+        checkUsernameDuplicated(command.username());
 
         verifyEmailCertified(command.username());
         var encodedPassword = passwordEncoder.encode(command.password());
@@ -45,8 +42,22 @@ public class UserService {
         return user.getQuota();
     }
 
-    private boolean existUsername(final String username) {
-        return userRepository.existsByUsernameAndUserAccountType(username, AccountType.NORMAL);
+    private void checkUsernameDuplicated(final String username) {
+        userRepository.findByUsername(username)
+                .ifPresent(user -> {
+                    if (user.isNormalUser()) {
+                        throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS_NORMAL);
+                    }
+                    if (user.isKakaoUser()) {
+                        throw QuestioException.of(AuthError.EMAIL_ALREADY_EXISTS_KAKAO);
+                    }
+                    if (user.isNaverUser()) {
+                        throw QuestioException.of(AuthError.EMAIL_ALREADY_EXIST_NAVER);
+                    }
+                    if (user.isGoogleUser()) {
+                        throw QuestioException.of(AuthError.EMAIL_ALREADY_EXIST_GOOGLE);
+                    }
+                });
     }
 
     private void verifyEmailCertified(String username) {

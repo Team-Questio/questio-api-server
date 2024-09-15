@@ -50,4 +50,21 @@ public class User extends BaseEntity {
         }
         this.quota--;
     }
+
+    public boolean isKakaoUser() {
+        return AccountType.KAKAO.equals(this.userAccountType);
+    }
+
+    public boolean isGoogleUser() {
+        return AccountType.GOOGLE.equals(this.userAccountType);
+    }
+
+    public boolean isNaverUser() {
+        return AccountType.NAVER.equals(this.userAccountType);
+    }
+
+    public boolean isNormalUser() {
+        return AccountType.NORMAL.equals(this.userAccountType);
+    }
+
 }
